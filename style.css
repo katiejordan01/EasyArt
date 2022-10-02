@@ -5,6 +5,17 @@ header {
     font-size: 35px;
     color: #5F9EA0;
 }
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    color: white;
+}
+.container {
+    height: 100%;
+    display: flex;
+}
 /* https://www.w3schools.com/howto/howto_css_center_button.asp */
 .center {
     margin: 0;
@@ -30,12 +41,20 @@ button {
 button:hover {
     border: 4px solid #437071; ;
 }
-.tools {
+#tools {
     float: left;
     width: 20%;
     height: 500px;
     background: #FAEBD7;
+    display: flex;
     flex-direction: column;
+    padding: 5px;
+}
+#draw {
+    float: right;
+    width: 80%;
+    height: 500px;
+    background-color: white;
 }
 .draw {
     float: right;

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,26 +11,24 @@
 <header>
     <p1>EasyArt</p1>
 </header>
-<div>
-    <div class = "tools">
-        <div class="center">
-            <button type="button">Pen</button>
-            <button type="button">Brush</button> 
-            <button type="button">Airbrush</button> 
+<body>
+    <section class="container">
+        <div id = "tools">
+            <div class="center">
+                <button type="button">Pen</button>
+                <button type="button">Brush</button> 
+                <button type="button">Airbrush</button> 
+            </div>
+            
         </div>
-        
-    </div>
-    <div class="draw">
-        <script>
-            var canvas = document.getElementById("myCanvas");
-            var ctx = canvas.getContext("2d");
-            ctx.fillStyle = "#FF0000";
-            ctx.fillRect(0, 0, 150, 75);
-        </script>
-    </div>
-</div>
-<footer>
+        <div class="draw">
+            <canvas id="draw"></canvas>
+        </div>
+    </section>
+    <script src="./index.js"></script>
+</body>
+<!-- <footer>
     "hey"
-</footer>
+</footer> -->
 
 </html>
