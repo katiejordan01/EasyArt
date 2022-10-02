@@ -1,0 +1,46 @@
+header {
+    background-color: #FAEBD7;
+    padding: 30px;
+    text-align: center;
+    font-size: 35px;
+    color: #5F9EA0;
+}
+/* https://www.w3schools.com/howto/howto_css_center_button.asp */
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 12%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+}
+button {
+    border: none;
+    display: block;
+    width: 70px;
+}
+.tools {
+    float: left;
+    width: 25%;
+    height: 450px;
+    background: #ccc;
+    flex-direction: column;
+}
+.draw {
+    float: right;
+    width: 75%;
+    height: 450px;
+    background-color: #f1f1f1;
+}
+body {
+    flex-direction: row;
+}
+
+footer {
+background-color: #777;
+height:600px;
+text-align: center;
+color: white;
+}
+  
