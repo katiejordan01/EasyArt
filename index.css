@@ -10,35 +10,45 @@ header {
     margin: 0;
     position: absolute;
     top: 50%;
-    left: 12%;
+    left: 10%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     flex-direction: column;
 }
 button {
+    background-color: #5F9EA0;
+    color: white;
     border: none;
     display: block;
     width: 70px;
+    margin-top: 15px;
+    margin-bottom:15px;
+    font: Raleway;
+    /* padding-top: 15px; */
+    height: 40px;
+}
+button:hover {
+    border: 4px solid #437071; ;
 }
 .tools {
     float: left;
-    width: 25%;
-    height: 450px;
-    background: #ccc;
+    width: 20%;
+    height: 500px;
+    background: #FAEBD7;
     flex-direction: column;
 }
 .draw {
     float: right;
-    width: 75%;
-    height: 450px;
-    background-color: #f1f1f1;
+    width: 80%;
+    height: 500px;
+    background-color: #fcf4e8;
 }
 body {
     flex-direction: row;
 }
 
 footer {
-background-color: #777;
+background-color: #437071;
 height:600px;
 text-align: center;
 color: white;
