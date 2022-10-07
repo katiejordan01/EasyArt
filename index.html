@@ -18,12 +18,14 @@
                 <button type="button">Pen</button>
                 <button type="button">Brush</button> 
                 <button type="button">Airbrush</button> 
+                <label for="lineWidth">Line Width</label>
+                <input id="lineWidth" name='lineWidth' type="number" value="5">
+                <label for="stroke">Stroke</label>
+                <input id="stroke" name='stroke' type="color">
             </div>
             
         </div>
-        <div class="draw">
-            <canvas id="draw"></canvas>
-        </div>
+        <canvas id="draw"></canvas>
     </section>
     <script src="./index.js"></script>
 </body>

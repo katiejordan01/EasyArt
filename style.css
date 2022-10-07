@@ -15,15 +15,17 @@ body {
 .container {
     height: 100%;
     display: flex;
+    flex-direction: row;
 }
 /* https://www.w3schools.com/howto/howto_css_center_button.asp */
 .center {
     margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+    /* position: absolute; */
+    position:relative;
+    top: 20%;
+    left: 35%;
+    /* -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
     flex-direction: column;
 }
 button {
@@ -42,26 +44,22 @@ button:hover {
     border: 4px solid #437071; ;
 }
 #tools {
-    float: left;
+    /* float: left;
+    width: 20%; */
     width: 20%;
     height: 500px;
     background: #FAEBD7;
     display: flex;
     flex-direction: column;
-    padding: 5px;
 }
 #draw {
-    float: right;
+    /* float: right;
+    padding-right: 200px; */
     width: 80%;
     height: 500px;
     background-color: white;
 }
-.draw {
-    float: right;
-    width: 80%;
-    height: 500px;
-    background-color: #fcf4e8;
-}
+
 body {
     flex-direction: row;
 }

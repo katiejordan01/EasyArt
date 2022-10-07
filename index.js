@@ -1,10 +1,12 @@
 const canvas = document.getElementById('draw');
-const toolbar = document.getElementById('tools');
+const tools = document.getElementById('tools');
 const ctx = canvas.getContext('2d');
 
 const canvasOffsetX = canvas.offsetLeft;
 const canvasOffsetY = canvas.offsetTop;
 
+console.log(canvas.offsetLeft);
+console.log(window.innerWidth);
 canvas.width = window.innerWidth - canvasOffsetX;
 canvas.height = window.innerHeight - canvasOffsetY;
 
