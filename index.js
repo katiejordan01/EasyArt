@@ -5,10 +5,10 @@ const ctx = canvas.getContext('2d');
 const canvasOffsetX = canvas.offsetLeft;
 const canvasOffsetY = canvas.offsetTop;
 
-console.log(canvas.offsetLeft);
-console.log(window.innerWidth);
-canvas.width = window.innerWidth - canvasOffsetX;
-canvas.height = window.innerHeight - canvasOffsetY;
+// console.log(canvas.offsetLeft);
+// console.log(window.innerWidth);
+canvas.width = window.innerWidth + canvasOffsetX;
+canvas.height = window.innerHeight + canvasOffsetY;
 
 let isPainting = false;
 let lineWidth = 5;
@@ -40,7 +40,7 @@ const draw = (e) => {
     ctx.lineWidth = lineWidth;
     ctx.lineCap = 'round';
 
-    ctx.lineTo(e.clientX - canvasOffsetX, e.clientY);
+    ctx.lineTo(e.clientX, e.clientY);
     ctx.stroke();
 }
 
