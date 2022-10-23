@@ -22,6 +22,13 @@ body {
 }
 #stroke {
     height: 15%;
+
+}
+#color-selector{
+
+}
+#color-selector.hover{
+
 }
 /* https://www.w3schools.com/howto/howto_css_center_button.asp */
 .center {

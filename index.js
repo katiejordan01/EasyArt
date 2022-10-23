@@ -31,8 +31,15 @@ tools.addEventListener('click', e => {
         document.body.style.cursor = "url(https://findicons.com/files/icons/1620/crystal_project/22/14_pencil.png), auto";
     } else if (e.target.id === "text") {
         document.body.style.cursor = "text";
+    } else if (e.target.id === "stroke") {
+        ctx.strokeStyle = e.target.value;
     }
 });
+tools.addEventListener('dblclick', (event) => {
+    ctx.strokeStyle = "#FFFFFF";
+});
+
+
 
 tools.addEventListener('change', e => {
     if(e.target.id === 'stroke') {
