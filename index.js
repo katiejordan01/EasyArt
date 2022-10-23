@@ -1,5 +1,5 @@
 const canvas = document.getElementById('draw');
-const tools = document.getElementById('tools');
+const tools = document.getElementById('tool');
 const ctx = canvas.getContext('2d');
 const colorSelector = document.getElementById('stroke');
 

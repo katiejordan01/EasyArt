@@ -11,7 +11,7 @@
 <header>
     <p1>EasyArt</p1>
 </header>
-<body>
+<body id="tool">
     <section class="container">
         <div id = "tools">
             <div class="center">
@@ -24,17 +24,16 @@
                 <label for="lineWidth">Line Width</label>
                 <input id="lineWidth" name='lineWidth' type="number" value="5">
                 <br>
-                <label for="stroke">Stroke</label>
-                <input id="stroke" name='stroke' type="color">
+                
             </div>
-            
         </div>
         <canvas id="draw"></canvas>
     </section>
     <script src="./index.js"></script>
 </body>
-<!-- <footer>
-    "hey"
-</footer> -->
+<footer id="tool" class="footer">
+    <input id="stroke" name='stroke' type="color">
+    <input id="stroke" name='stroke' type="color">
+</footer>
 
 </html>
