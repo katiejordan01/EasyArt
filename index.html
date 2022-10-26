@@ -1,31 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="index.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyArt</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
 </head>
-
-<header>
-    <p1>EasyArt</p1>
-</header>
-<div>
-    <div class = "tools">
-        <div class="center">
-            <button type="button">Pen</button>
-            <button type="button">Brush</button> 
-            <button type="button">Airbrush</button> 
-        </div>
-        
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="nav">
+        <!-- We will be accessing the data-clr in JavaScript -->
+        <div class="clr" data-clr="#000"></div>
+        <div class="clr" data-clr="#EF626C"></div>
+        <div class="clr" data-clr="#fdec03"></div>
+        <div class="clr" data-clr="#24d102"></div>
+        <div class="clr" data-clr="#fff"></div>
+        <button class="clear">clear</button>
+        <button class="save">save</button>
     </div>
-    <div class="draw">
-        <h2>"sup"</h2>
-    </div>
-</div>
-<footer>
-    "hey"
-</footer>
 
+    <script src="main.js"></script>
+</body>
 </html>
