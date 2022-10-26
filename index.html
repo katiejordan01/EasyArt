@@ -16,18 +16,16 @@
         <div id = "tools">
             <div class="center">
                 <button id = "pen" type="button">Pen</button>
-                <button type="button">Brush</button> 
-                <button type="button">Airbrush</button>
+                <button id = "brush" type="button">Brush</button> 
+                <button id = "airbrush" type="button">Airbrush</button>
                 <button id="text" type="button">Text</button>
                 <button id="eraser" type="button">Eraser</button>
                 <button id="clear" type="button">Clear</button>
                 <label for="lineWidth">Line Width</label>
                 <input id="lineWidth" name='lineWidth' type="number" value="5">
-                <br>
-                
             </div>
         </div>
-        <canvas id="draw"></canvas>
+        <canvas id="draw" width="100" height="100" style="border:1px solid #000000;"></canvas>
     </section>
     <script src="./index.js"></script>
 </body>

@@ -6,10 +6,12 @@ const colorSelector = document.getElementById('stroke');
 const canvasOffsetX = canvas.offsetLeft;
 const canvasOffsetY = canvas.offsetTop;
 
-console.log(canvas.offsetLeft);
-console.log(window.innerWidth);
-canvas.width = window.innerWidth - canvasOffsetX;
-canvas.height = window.innerHeight - canvasOffsetY;
+console.log("x:" + canvasOffsetX);
+console.log("y:" + canvasOffsetY);
+console.log("x1:" + window.innerWidth);
+console.log("y1:" + window.innerHeight);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 var eraserImg = new Image();
 eraserImg.src = "eraser_icon.png"
