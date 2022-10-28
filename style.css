@@ -4,10 +4,10 @@
 }
 
 .nav{
-    width: 310px;
-    height: 50px;
+    width: 600px;
+    height: 100px;
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -21,8 +21,8 @@
 }
 
 .clr{
-    height: 30px;
-    width: 30px;
+    height: 80px;
+    width: 80px;
     background-color: blue;
     border-radius: 50%;
     border: 3px solid rgb(214, 214, 214);
