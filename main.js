@@ -66,6 +66,7 @@ clrs.forEach(clr => {
         ctx.fillRect(clrX, clrY, clrWidth, clrHeight);
 
     })
+
 })
 
 let clearBtn = document.querySelector(".clear")
@@ -83,7 +84,10 @@ window.addEventListener("mousedown", (e) => {
 })
 window.addEventListener("mouseup", (e) => {
     const element = document.getElementById('uniqueIdentifier');
-    element.remove();
+    if (element !== null) {
+       element.remove(); 
+    }
+    clrDraw = true;
     draw = false
 })
 
