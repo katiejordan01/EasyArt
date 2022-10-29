@@ -17,9 +17,18 @@
     /* opacity: .3; */
     /* transition: opacity .5s; */
 }
-.nav:hover{
-    opacity: 1;
+.side{
+    height: 100%;
+    width: 10%;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    left: 0;
+    top: 0;
+    padding-top: 100px;
+    flex-direction: column;
 }
+
 
 .clr{
     height: 80px;
