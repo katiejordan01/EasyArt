@@ -28,7 +28,16 @@
     padding-top: 100px;
     flex-direction: column;
 }
-
+.title{
+    position: fixed;
+    top: 20px;
+    left: 47%;
+    font-family: "Monaco";
+    font-size: 20px;
+    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+    -webkit-background-clip: text;
+    color: transparent;
+}
 
 .clr{
     height: 80px;
