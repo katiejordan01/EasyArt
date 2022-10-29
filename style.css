@@ -4,8 +4,8 @@
 }
 
 .nav{
-    width: 600px;
-    height: 100px;
+    width: 75%;
+    height: 15%;
     position: fixed;
     bottom: 0;
     left: 50%;
@@ -13,6 +13,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    padding: 10px;
     /* opacity: .3; */
     /* transition: opacity .5s; */
 }
@@ -57,4 +58,11 @@ button{
 }
 .save{
     background-color: #0f65d4;
+}
+#stroke {
+    width: 20%;
+    height: 60%;
+    /* border-radius: 20px;
+    padding: 6px; */
+
 }

@@ -23,69 +23,69 @@ let clrY2;
 
 const selR= 0, selG = 0, selB = 0;
 
-let clrs = document.querySelectorAll(".clr")
-clrs = Array.from(clrs)
-clrs.forEach(clr => {
-    clr.addEventListener("click", () => {
-        ctx.strokeStyle = clr.dataset.clr
-    })
-    clr.addEventListener("mousedown", (e) => {
+// let clrs = document.querySelectorAll(".clr")
+// clrs = Array.from(clrs)
+// clrs.forEach(clr => {
+//     clr.addEventListener("click", () => {
+//         ctx.strokeStyle = clr.dataset.clr
+//     })
+//     clr.addEventListener("mousedown", (e) => {
 
-        clrDraw = false;
-        clrX = e.clientX - clrWidth/2;
-        //680
-        clrY = e.clientY - (clrHeight + 20);
-        clrX2 = e.clientX + clrWidth/2;
-        clrY2 = e.clientY - 20;
+//         clrDraw = false;
+//         clrX = e.clientX - clrWidth/2;
+//         //680
+//         clrY = e.clientY - (clrHeight + 20);
+//         clrX2 = e.clientX + clrWidth/2;
+//         clrY2 = e.clientY - 20;
         
-        div = document.createElement('div');
-        div.style.backgroundImage = "linear-gradient(to right, white,red,orange,yellow,green,blue,indigo,violet,black)";
-        div.style.borderRadius = "10px"
-        div.style.borderStyle = "inset"
-        //div.style.backgroundImage = "linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1))";
-        div.style.position = "absolute";
-        div.style.left = clrX + "px";
-        div.style.top = clrY + "px";
-        div.style.width = clrWidth + "px";
-        div.style.height = clrHeight+ "px";
-        div.setAttribute("id", "clrSelector");
-        document.getElementsByTagName('body')[0].appendChild(div);
+//         div = document.createElement('div');
+//         div.style.backgroundImage = "linear-gradient(to right, white,red,orange,yellow,green,blue,indigo,violet,black)";
+//         div.style.borderRadius = "10px"
+//         div.style.borderStyle = "inset"
+//         //div.style.backgroundImage = "linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1))";
+//         div.style.position = "absolute";
+//         div.style.left = clrX + "px";
+//         div.style.top = clrY + "px";
+//         div.style.width = clrWidth + "px";
+//         div.style.height = clrHeight+ "px";
+//         div.setAttribute("id", "clrSelector");
+//         document.getElementsByTagName('body')[0].appendChild(div);
 
-        // let clrSelector = document.getElementById('clrSelector');
+//         // let clrSelector = document.getElementById('clrSelector');
 
-        // clrSelector.addEventListener("mouseup", (e) => {
-        //     const x = e.clientX;
-        //     const y = e.clientY;
-        //     const imgData = ctx.getImageData(x, y, 1, 1);
-        //     const [selR, selG, SelB] = imgData.data;
-        // //     console.log(selR);
-        //     console.log(selG);
-        //     console.log(selB);
+//         // clrSelector.addEventListener("mouseup", (e) => {
+//         //     const x = e.clientX;
+//         //     const y = e.clientY;
+//         //     const imgData = ctx.getImageData(x, y, 1, 1);
+//         //     const [selR, selG, SelB] = imgData.data;
+//         // //     console.log(selR);
+//         //     console.log(selG);
+//         //     console.log(selB);
     
-        // })
+//         // })
 
 
-        // const gradientH = div.createLinearGradient(clrX, 0, clrX2, 0);
-        // gradientH.addColorStop(0, "rgb(255, 0, 0)"); // red
-        // gradientH.addColorStop(1/6, "rgb(255, 255, 0)"); // yellow
-        // gradientH.addColorStop(2/6, "rgb(0, 255, 0)"); // green
-        // gradientH.addColorStop(3/6, "rgb(0, 255, 255)");
-        // gradientH.addColorStop(4/6, "rgb(0, 0, 255)"); // blue
-        // gradientH.addColorStop(5/6, "rgb(255, 0, 255)");
-        // gradientH.addColorStop(1, "rgb(255, 0, 0)"); // red
-        // div.fillStyle = gradientH;
-        // div.fillRect(clrX, clrY, clrWidth, clrHeight);
-        // const gradientV = div.createLinearGradient(0, clrY, 0, clrY2);
-        // gradientV.addColorStop(0, "rgba(255, 255, 255, 1)"); // white
-        // gradientV.addColorStop(0.5, "rgba(255, 255, 255, 0)");
-        // gradientV.addColorStop(0.5, "rgba(0, 0, 0, 0)"); // transparent
-        // gradientV.addColorStop(1, "rgba(0, 0, 0, 1)"); // black
-        // div.fillStyle = gradientV;
-        // div.fillRect(clrX, clrY, clrWidth, clrHeight);
+//         // const gradientH = div.createLinearGradient(clrX, 0, clrX2, 0);
+//         // gradientH.addColorStop(0, "rgb(255, 0, 0)"); // red
+//         // gradientH.addColorStop(1/6, "rgb(255, 255, 0)"); // yellow
+//         // gradientH.addColorStop(2/6, "rgb(0, 255, 0)"); // green
+//         // gradientH.addColorStop(3/6, "rgb(0, 255, 255)");
+//         // gradientH.addColorStop(4/6, "rgb(0, 0, 255)"); // blue
+//         // gradientH.addColorStop(5/6, "rgb(255, 0, 255)");
+//         // gradientH.addColorStop(1, "rgb(255, 0, 0)"); // red
+//         // div.fillStyle = gradientH;
+//         // div.fillRect(clrX, clrY, clrWidth, clrHeight);
+//         // const gradientV = div.createLinearGradient(0, clrY, 0, clrY2);
+//         // gradientV.addColorStop(0, "rgba(255, 255, 255, 1)"); // white
+//         // gradientV.addColorStop(0.5, "rgba(255, 255, 255, 0)");
+//         // gradientV.addColorStop(0.5, "rgba(0, 0, 0, 0)"); // transparent
+//         // gradientV.addColorStop(1, "rgba(0, 0, 0, 1)"); // black
+//         // div.fillStyle = gradientV;
+//         // div.fillRect(clrX, clrY, clrWidth, clrHeight);
 
-    })
+//     })
 
-})
+// })
 
 
 // let clrSelector = document.getElementById('clrSelector');
