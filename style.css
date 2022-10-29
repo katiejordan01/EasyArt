@@ -19,11 +19,6 @@ body {
     background: #FAEBD7;
 }
 
-#stroke {
-    height: 15%;
-
-}
-
 
 /* https://www.w3schools.com/howto/howto_css_center_button.asp */
 .center {
@@ -80,7 +75,13 @@ height:600px;
 text-align: center;
 color: white;
 }
-  
-input {
-    width: 20%;
+
+#stroke {
+    width: 15%;
+    height: 15%;
+
 }
+
+/* input {
+    width: 20%;
+} */
