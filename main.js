@@ -5,6 +5,8 @@ const colorSelector = document.getElementById('stroke');
 
 const ctx = canvas.getContext("2d")
 
+let utensil = 0;
+
 let prevX = null
 let prevY = null
 
@@ -17,6 +19,7 @@ let clrs = document.querySelectorAll(".stroke");
 clrs = Array.from(clrs);
 clrs.forEach(clr => {
     clr.addEventListener("click", (e) => {
+        console.log(e.target.value);
         ctx.strokeStyle = e.target.value;
     })
     clr.addEventListener('change', e => {
@@ -29,6 +32,17 @@ let clearBtn = document.querySelector(".clear")
 clearBtn.addEventListener("click", () => {
     // Clearning the entire canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+})
+
+let penBtn = document.querySelector(".pen")
+penBtn.addEventListener("click", () => {
+    utensil = 0;
+    console.log(utensil);
+})
+let airbrushBtn = document.querySelector(".airbrush")
+airbrushBtn.addEventListener("click", () => {
+    utensil = 1;
+    console.log(utensil);
 })
 
 
