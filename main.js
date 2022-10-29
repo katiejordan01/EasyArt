@@ -1,6 +1,8 @@
 const canvas = document.getElementById("canvas")
+//const selector = document.getElementById('stroke');
 canvas.height = window.innerHeight
 canvas.width = window.innerWidth
+const colorSelector = document.getElementById('stroke');
 
 const ctx = canvas.getContext("2d")
 //const {width, height} = canvas;
@@ -102,6 +104,15 @@ const selR= 0, selG = 0, selB = 0;
 
 //     })
 // }
+
+let clrs = document.querySelectorAll(".stroke");
+clrs = Array.from(clrs);
+clrs.forEach(clr => {
+    clr.addEventListener("click", (e) => {
+        ctx.strokeStyle = e.target.value;
+    })
+})
+
 
 let clearBtn = document.querySelector(".clear")
 clearBtn.addEventListener("click", () => {
