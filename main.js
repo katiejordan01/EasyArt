@@ -21,6 +21,8 @@ let clrY;
 let clrX2;
 let clrY2;
 
+const selR= 0, selG = 0, selB = 0;
+
 let clrs = document.querySelectorAll(".clr")
 clrs = Array.from(clrs)
 clrs.forEach(clr => {
@@ -46,8 +48,21 @@ clrs.forEach(clr => {
         div.style.top = clrY + "px";
         div.style.width = clrWidth + "px";
         div.style.height = clrHeight+ "px";
-        div.setAttribute("id", "uniqueIdentifier");
+        div.setAttribute("id", "clrSelector");
         document.getElementsByTagName('body')[0].appendChild(div);
+
+        // let clrSelector = document.getElementById('clrSelector');
+
+        // clrSelector.addEventListener("mouseup", (e) => {
+        //     const x = e.clientX;
+        //     const y = e.clientY;
+        //     const imgData = ctx.getImageData(x, y, 1, 1);
+        //     const [selR, selG, SelB] = imgData.data;
+        // //     console.log(selR);
+        //     console.log(selG);
+        //     console.log(selB);
+    
+        // })
 
 
         // const gradientH = div.createLinearGradient(clrX, 0, clrX2, 0);
@@ -72,6 +87,22 @@ clrs.forEach(clr => {
 
 })
 
+
+// let clrSelector = document.getElementById('clrSelector');
+// if (clrSelector != null) {
+//     console.log("nice");
+//     clrSelector.addEventListener("mouseup", (e) => {
+//         const x = e.clientX;
+//         const y = e.clientY;
+//         const imgData = ctx.getImageData(x, y, 1, 1);
+//         const [selR, selG, SelB] = imgData.data;
+//         console.log(selR);
+//         console.log(selG);
+//         console.log(selB);
+
+//     })
+// }
+
 let clearBtn = document.querySelector(".clear")
 clearBtn.addEventListener("click", () => {
     // Clearning the entire canvas
@@ -86,9 +117,18 @@ window.addEventListener("mousedown", (e) => {
     
 })
 window.addEventListener("mouseup", (e) => {
-    const element = document.getElementById('uniqueIdentifier');
+    const element = document.getElementById('clrSelector');
     if (element !== null) {
-       element.remove(); 
+        const x = e.clientX;
+        const y = e.clientY;
+        let img = new Image();
+        img.src = element.style.backgroundImage;
+        // const imgData = img.getImageData(x, y, 1, 1);
+        // const [selR, selG, selB] = imgData.data;
+        // console.log(selR);
+        // console.log(selG);
+        // console.log(selB);
+        element.remove(); 
     }
     clrDraw = true;
     draw = false
