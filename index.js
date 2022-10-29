@@ -76,6 +76,10 @@ canvas.addEventListener('mouseup', (e) => {
     ctx.stroke();
     ctx.beginPath();
 });
+canvas.addEventListener('mousemove', draw);
+
+
+//paint bucket
 canvas.addEventListener('click', function (evt) {
     if (evt.detail === 3) {
         pixelStack = [[evt.clientX, evt.clientY]];
@@ -155,4 +159,3 @@ function colorPixel(pixelPos)
   colorLayer.data[pixelPos+3] = 255;
 }
 
-canvas.addEventListener('mousemove', draw);
