@@ -19,6 +19,9 @@ clrs.forEach(clr => {
     clr.addEventListener("click", (e) => {
         ctx.strokeStyle = e.target.value;
     })
+    clr.addEventListener('change', e => {
+        ctx.strokeStyle = e.target.value;
+    })
 })
 
 
