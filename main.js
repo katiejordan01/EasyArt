@@ -5,7 +5,6 @@ const colorSelector = document.getElementById('stroke');
 
 const ctx = canvas.getContext("2d")
 
-let utensil = 0;
 
 let prevX = null
 let prevY = null
@@ -36,14 +35,12 @@ clearBtn.addEventListener("click", () => {
 
 let penBtn = document.querySelector(".pen")
 penBtn.addEventListener("click", () => {
-    utensil = 0;
-    console.log(utensil);
 })
-let airbrushBtn = document.querySelector(".airbrush")
-airbrushBtn.addEventListener("click", () => {
-    utensil = 1;
-    console.log(utensil);
-})
+// let airbrushBtn = document.querySelector(".airbrush")
+// airbrushBtn.addEventListener("click", () => {
+//     utensil = 1;
+//     console.log(utensil);
+// })
 
 
 window.addEventListener("mousedown", (e) => {
