@@ -2,6 +2,7 @@ const canvas = document.getElementById("canvas")
 canvas.height = window.innerHeight
 canvas.width = window.innerWidth
 const colorSelector = document.getElementById('stroke');
+let thickness = document.getElementById("thickness");
 
 const ctx = canvas.getContext("2d")
 
@@ -10,9 +11,9 @@ let color = '#000000';
 
 let prevX = null
 let prevY = null
-let lineWidth = 10;
+let lineWidth = thickness.value;
 
-ctx.lineWidth = 10
+ctx.lineWidth = lineWidth
 
 let draw = false;
 const selR= 0, selG = 0, selB = 0;
@@ -29,6 +30,11 @@ clrs.forEach(clr => {
         ctx.strokeStyle = e.target.value;
         color = e.target.value;
     })
+})
+
+thickness.addEventListener('change', () => {
+    lineWidth = thickness.value;
+    ctx.lineWidth = thickness.value;
 })
 
 
