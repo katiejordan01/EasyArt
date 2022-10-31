@@ -51,20 +51,9 @@ tools.addEventListener('click', e => {
         }
         // textboxes.forEach(textbox => textbox.destroy())
     } else if (e.target.id === 'eraser') { //logic for the eraser tool - it paints white
-        console.log("I'm using the eraser now!");
-        currentToolState = Tool.Eraser; //sets the state to Eraser
-        iconOffsetY = -14;
-        ctx.strokeStyle = "#FFFFFF";
-        document.body.style.cursor = "url(https://findicons.com/files/icons/1156/fugue/16/eraser.png), auto"; //setting a different icon from the internet
+        eraserMode()
     } else if (e.target.id === "pen") { //logic for the pen
-        console.log("I'm using the pen now!") //sets the state to Pen
-        currentToolState = Tool.Pen;
-        iconOffsetX = -2;
-        iconOffsetY = -20;
-        ctx.lineCap = 'round';
-        ctx.lineWidth = lineWidthSelector.value;
-        ctx.strokeStyle = "#000000"
-        document.body.style.cursor = "url(https://findicons.com/files/icons/1620/crystal_project/22/14_pencil.png), auto"; //setting the icon
+        penMode()
     } else if (e.target.id === "text") { // the text tool, I'm using someone's text box from this website: https://goldfirestudios.com/canvasinput-html5-canvas-text-input
         console.log("I'm using the text tool now!");
         document.body.style.cursor = "text"; //setting the icon to change
@@ -73,6 +62,26 @@ tools.addEventListener('click', e => {
         iconOffsetY = 0
     }
 });
+
+function penMode() {
+    console.log("I'm using the pen now!") //sets the state to Pen
+    currentToolState = Tool.Pen;
+    iconOffsetX = -2;
+    iconOffsetY = -25;
+    ctx.lineCap = 'round';
+    ctx.lineWidth = lineWidthSelector.value;
+    ctx.strokeStyle = "#000000"
+    document.body.style.cursor = "url(https://findicons.com/files/icons/1620/crystal_project/22/14_pencil.png), auto"; //setting the icon
+}
+
+function eraserMode() {
+    console.log("I'm using the eraser now!");
+    currentToolState = Tool.Eraser; //sets the state to Eraser
+    iconOffsetY = -14;
+    ctx.strokeStyle = "#FFFFFF";
+    document.body.style.cursor = "url(https://findicons.com/files/icons/1156/fugue/16/eraser.png), auto"; //setting a different icon from the internet
+}
+
 tools.addEventListener('change', e => {
     if(e.target.id === 'lineWidth') {
         ctx.lineWidth = e.target.value;
@@ -145,21 +154,8 @@ window.addEventListener("contextmenu", (e) => { //this is the right click to pul
 window.addEventListener("dblclick", (e) => { //double clicking changes a pen to an eraser and vice-versa using states
     //TODO: this logic is weird when text boxes are on the page; after switching, I can't click and drag
     if (currentToolState == Tool.Pen) {
-        console.log("I'm using the eraser now!");
-        currentToolState = Tool.Eraser;
-        draw = false;
-        iconOffsetY = -14;
-        ctx.strokeStyle = "#FFFFFF";
-        document.body.style.cursor = "url(https://findicons.com/files/icons/1156/fugue/16/eraser.png), auto";
+        eraserMode()
     } else if (currentToolState == Tool.Eraser) {
-        console.log("I'm using the pen now!");
-        currentToolState = Tool.Pen;
-        draw = false;
-        iconOffsetX = -2;
-        iconOffsetY = -20;
-        ctx.lineCap = 'round';
-        ctx.lineWidth = lineWidthSelector.value;
-        ctx.strokeStyle = "#000000";
-        document.body.style.cursor = "url(https://findicons.com/files/icons/1620/crystal_project/22/14_pencil.png), auto";
+        penMode()
     }
 });
