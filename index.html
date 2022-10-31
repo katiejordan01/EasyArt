@@ -12,11 +12,14 @@
     <div class="title">
         <h1>EasyArt</h1>
     </div>
-    <div class="side">
-        <button class="pen">Pen</button>
+    <div class="side" id="side">
+        <button id="pen">Pen</button>
         <!-- <button class='airbrush'>Airbrush</button> -->
-        <button class="eraser">eraser</button>
-        <button class="clear">clear</button>
+        <button id="eraser">eraser</button>
+        <button id="text">text</button>
+        <button id="clear">clear</button>
+        <label for="lineWidth">Line Width</label>
+        <input id="lineWidth" name='lineWidth' type="number" value="5">
 
     </div>
     <div class="nav">
@@ -29,5 +32,6 @@
     </div>
 
     <script src="main.js"></script>
+    <script src="CanvasInput.js"></script>
 </body>
 </html>
