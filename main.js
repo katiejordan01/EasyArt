@@ -11,6 +11,7 @@ let color = '#000000';
 
 let prevX = null
 let prevY = null
+let selecting = false;
 let lineWidth = thickness.value;
 
 ctx.lineWidth = lineWidth
@@ -36,6 +37,20 @@ thickness.addEventListener('change', () => {
     lineWidth = thickness.value;
     ctx.lineWidth = thickness.value;
 })
+thickness.addEventListener('mousedown', () => {
+    selecting = true;
+})
+thickness.addEventListener('mouseup', () => {
+    selecting = false;
+})
+// window.addEventListener('scroll', (e) => {
+//     if(e.deltaY > 1) {
+//         console.log(e.deltaY)
+//         thickness.value++;
+//       } else if (e.deltaY < -1) {
+//         thickness.value--;
+//       } 
+// })
 
 
 let clearBtn = document.querySelector(".clear")
@@ -53,7 +68,7 @@ penBtn.addEventListener("click", () => {
 let pencilBtn = document.querySelector(".pencil")
 pencilBtn.addEventListener("click", () => {
     utensil = 2;
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = .9;
 })
 let airbrushBtn = document.querySelector(".airbrush")
 airbrushBtn.addEventListener("click", () => {
@@ -76,29 +91,32 @@ window.addEventListener("mouseup", (e) => {
 })
 
 window.addEventListener("mousemove", (e) => {
-    if(prevX == null || prevY == null || !draw){
-        prevX = e.clientX
-        prevY = e.clientY
-        return
+    if (!selecting) {
+        if(prevX == null || prevY == null || !draw) {
+            prevX = e.clientX
+            prevY = e.clientY
+            return
+        }
+
+        let currentX = e.clientX
+        let currentY = e.clientY
+
+        ctx.beginPath()
+        ctx.moveTo(prevX, prevY)
+        ctx.lineTo(currentX, currentY)
+        if (utensil === 1) {
+            ctx.arc(e.clientX, e.clientY,lineWidth, 0, Math.PI*2);
+        } else if (utensil === 0) {
+            ctx.arc(e.clientX, e.clientY,lineWidth, 0, Math.PI*2)
+        }
+
+        ctx.stroke()
+        
+
+        prevX = currentX
+        prevY = currentY
+        
     }
-
-    let currentX = e.clientX
-    let currentY = e.clientY
-
-    ctx.beginPath()
-    ctx.moveTo(prevX, prevY)
-    ctx.lineTo(currentX, currentY)
-    if (utensil === 1) {
-       ctx.arc(e.clientX, e.clientY,lineWidth/2, 0, Math.PI*2);
-    } else if (utensil === 0) {
-        ctx.arc(e.clientX, e.clientY,lineWidth/2, 0, Math.PI*2)
-    }
-
-    ctx.stroke()
-    
-
-    prevX = currentX
-    prevY = currentY
 })
 
 function hexToRgb(hex) {
