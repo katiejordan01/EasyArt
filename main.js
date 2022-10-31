@@ -6,11 +6,13 @@ const colorSelector = document.getElementById('stroke');
 const ctx = canvas.getContext("2d")
 
 let utensil = 0;
+let color = '#000000';
 
 let prevX = null
 let prevY = null
+let lineWidth = 10;
 
-ctx.lineWidth = 5
+ctx.lineWidth = 10
 
 let draw = false;
 const selR= 0, selG = 0, selB = 0;
@@ -21,9 +23,11 @@ clrs.forEach(clr => {
     clr.addEventListener("click", (e) => {
         console.log(e.target.value);
         ctx.strokeStyle = e.target.value;
+        color = e.target.value;
     })
     clr.addEventListener('change', e => {
         ctx.strokeStyle = e.target.value;
+        color = e.target.value;
     })
 })
 
@@ -37,12 +41,22 @@ clearBtn.addEventListener("click", () => {
 let penBtn = document.querySelector(".pen")
 penBtn.addEventListener("click", () => {
     utensil = 0;
+    ctx.globalAlpha = 1;
     console.log(utensil);
+})
+let pencilBtn = document.querySelector(".pencil")
+pencilBtn.addEventListener("click", () => {
+    utensil = 2;
+    ctx.globalAlpha = 1;
 })
 let airbrushBtn = document.querySelector(".airbrush")
 airbrushBtn.addEventListener("click", () => {
     utensil = 1;
-    console.log(utensil);
+    // let rgb = hexToRgb(color);
+    // console.log(rgb);
+    // ctx.strokeStyle = 'red';
+    ctx.globalAlpha = 0.05;
+
 })
 
 
@@ -68,8 +82,24 @@ window.addEventListener("mousemove", (e) => {
     ctx.beginPath()
     ctx.moveTo(prevX, prevY)
     ctx.lineTo(currentX, currentY)
+    if (utensil === 1) {
+       ctx.arc(e.clientX, e.clientY,lineWidth/2, 0, Math.PI*2);
+    } else if (utensil === 0) {
+        ctx.arc(e.clientX, e.clientY,lineWidth/2, 0, Math.PI*2)
+    }
+
     ctx.stroke()
+    
 
     prevX = currentX
     prevY = currentY
 })
+
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
