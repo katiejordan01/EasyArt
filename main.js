@@ -9,10 +9,11 @@ const ctx = canvas.getContext("2d")
 let utensil = 0;
 let color = '#000000';
 
+
 let prevX = null
 let prevY = null
 let selecting = false;
-let lineWidth = thickness.value;
+let lineWidth = 5;
 
 ctx.lineWidth = lineWidth
 
@@ -105,6 +106,8 @@ window.addEventListener("mousemove", (e) => {
         ctx.moveTo(prevX, prevY)
         ctx.lineTo(currentX, currentY)
         if (utensil === 1) {
+            ctx.lineJoin = 'round';
+            ctx.miterLimit = 2;
             ctx.arc(e.clientX, e.clientY,lineWidth, 0, Math.PI*2);
         } else if (utensil === 0) {
             ctx.arc(e.clientX, e.clientY,lineWidth, 0, Math.PI*2)
