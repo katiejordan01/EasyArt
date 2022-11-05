@@ -13,7 +13,7 @@ let color = '#000000';
 let prevX = null
 let prevY = null
 let selecting = false;
-let lineWidth = 5;
+let lineWidth = 10;
 
 ctx.lineWidth = lineWidth
 
@@ -108,9 +108,11 @@ window.addEventListener("mousemove", (e) => {
         if (utensil === 1) {
             ctx.lineJoin = 'round';
             ctx.miterLimit = 2;
-            ctx.arc(e.clientX, e.clientY,lineWidth, 0, Math.PI*2);
+            ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2);
         } else if (utensil === 0) {
-            ctx.arc(e.clientX, e.clientY,lineWidth, 0, Math.PI*2)
+            ctx.lineJoin = 'round';
+            ctx.miterLimit = 2;
+            ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
         }
 
         ctx.stroke()
