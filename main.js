@@ -6,6 +6,8 @@ canvas2.width = 1224;
 canvas2.height = 768;
 canvas2.style.zIndex = 8;
 canvas2.style.position = "absolute";
+canvas2.style.border = "2px";
+canvas2.marginLeft = "50px";
 
 
 var body = document.getElementsByTagName("body")[0];
@@ -37,7 +39,7 @@ let lineWidth = 10;
 ctx.lineWidth = lineWidth
 
 let draw = false;
-// 0-draw 1-select 2-recognition
+// modes: 0-draw 1-select 2-recognition
 let mode = 0;
 const selR= 0, selG = 0, selB = 0;
 
@@ -108,18 +110,18 @@ airbrushBtn.addEventListener("click", () => {
 let selectBtn = document.querySelector(".select")
 selectBtn.addEventListener("click", () => {
     mode = 1;
+    console.log(mode);
 })
 
 
 window.addEventListener("mousedown", (e) => {
     if (mode === 0) {
         draw = true;
-        ctx2.fillText("hello",10, 50)
     } else if (mode === 1) {
         isDragging = true;
-        ctx.fillStyle="skyblue";
-        ctx.strokeStyle="lightgray";
-        ctx.lineWidth=3;
+        ctx2.fillStyle="skyblue";
+        ctx2.strokeStyle="lightgray";
+        ctx2.lineWidth=3;
         startX = e.clientX;
         startY = e.clientY;
     }
@@ -129,7 +131,6 @@ window.addEventListener("mouseup", (e) => {
     if (mode === 0) {
         clrDraw = true;
         draw = false
-        ctx2.clearRect(0,0,200,300);
     } else if (mode === 1) {
         isDragging = false;
     }
@@ -171,6 +172,9 @@ window.addEventListener("mousemove", (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
         if (!isDragging) {return;}
+
+        ctx2.clearRect(0,0,canvas2.width, canvas2.height);
+        drawRectangle(mouseX, mouseY)
         
     }
 })
@@ -183,3 +187,12 @@ function hexToRgb(hex) {
       b: parseInt(result[3], 16)
     } : null;
   }
+
+  function drawRectangle(mouseX,mouseY){
+    var width=mouseX-startX;
+    var height=mouseY-startY;
+    ctx.beginPath();
+    ctx.rect(startX,startY,width,height);
+    ctx.fill();
+    ctx.stroke();
+}
