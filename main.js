@@ -1,8 +1,24 @@
 const canvas = document.getElementById("canvas")
+const canvas2 = document.createElement('canvas');
+
+canvas2.id = "CursorLayer";
+canvas2.width = 1224;
+canvas2.height = 768;
+canvas2.style.zIndex = 8;
+canvas2.style.position = "absolute";
+
+
+var body = document.getElementsByTagName("body")[0];
+body.appendChild(canvas2);
+cursorLayer = document.getElementById("CursorLayer");
+
+ctx2 = canvas2.getContext("2d");
 canvas.height = window.innerHeight
 canvas.width = window.innerWidth
 const colorSelector = document.getElementById('stroke');
 let thickness = document.getElementById("thickness");
+
+canvas2.style.marginTop = "-" + canvas.height+ "px";
 
 const ctx = canvas.getContext("2d")
 
@@ -98,6 +114,7 @@ selectBtn.addEventListener("click", () => {
 window.addEventListener("mousedown", (e) => {
     if (mode === 0) {
         draw = true;
+        ctx2.fillText("hello",10, 50)
     } else if (mode === 1) {
         isDragging = true;
         ctx.fillStyle="skyblue";
@@ -112,6 +129,7 @@ window.addEventListener("mouseup", (e) => {
     if (mode === 0) {
         clrDraw = true;
         draw = false
+        ctx2.clearRect(0,0,200,300);
     } else if (mode === 1) {
         isDragging = false;
     }
