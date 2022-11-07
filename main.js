@@ -8,6 +8,9 @@ const ctx = canvas.getContext("2d")
 
 let utensil = 0;
 let color = '#000000';
+let isDragging = false;
+var startX, startY;
+var mouseX, mouseY;
 
 
 let prevX = null
@@ -18,6 +21,8 @@ let lineWidth = 10;
 ctx.lineWidth = lineWidth
 
 let draw = false;
+// 0-draw 1-select 2-recognition
+let mode = 0;
 const selR= 0, selG = 0, selB = 0;
 
 let clrs = document.querySelectorAll(".stroke");
@@ -62,18 +67,21 @@ clearBtn.addEventListener("click", () => {
 
 let penBtn = document.querySelector(".pen")
 penBtn.addEventListener("click", () => {
+    mode = 0;
     utensil = 0;
     ctx.globalAlpha = 1;
     console.log(utensil);
 })
 let pencilBtn = document.querySelector(".pencil")
 pencilBtn.addEventListener("click", () => {
+    mode = 0;
     utensil = 2;
     ctx.globalAlpha = .9;
 })
 let airbrushBtn = document.querySelector(".airbrush")
 airbrushBtn.addEventListener("click", () => {
     utensil = 1;
+    mode = 0;
     // let rgb = hexToRgb(color);
     // console.log(rgb);
     // ctx.strokeStyle = 'red';
@@ -81,45 +89,70 @@ airbrushBtn.addEventListener("click", () => {
 
 })
 
+let selectBtn = document.querySelector(".select")
+selectBtn.addEventListener("click", () => {
+    mode = 1;
+})
+
 
 window.addEventListener("mousedown", (e) => {
-    draw = true;
+    if (mode === 0) {
+        draw = true;
+    } else if (mode === 1) {
+        isDragging = true;
+        ctx.fillStyle="skyblue";
+        ctx.strokeStyle="lightgray";
+        ctx.lineWidth=3;
+        startX = e.clientX;
+        startY = e.clientY;
+    }
     
 })
 window.addEventListener("mouseup", (e) => {
-    clrDraw = true;
-    draw = false
+    if (mode === 0) {
+        clrDraw = true;
+        draw = false
+    } else if (mode === 1) {
+        isDragging = false;
+    }
 })
 
 window.addEventListener("mousemove", (e) => {
-    if (!selecting) {
-        if(prevX == null || prevY == null || !draw) {
-            prevX = e.clientX
-            prevY = e.clientY
-            return
+    if (mode === 0) {
+        if (!selecting) {
+            if(prevX == null || prevY == null || !draw) {
+                prevX = e.clientX
+                prevY = e.clientY
+                return
+            }
+    
+            let currentX = e.clientX
+            let currentY = e.clientY
+    
+            ctx.beginPath()
+            ctx.moveTo(prevX, prevY)
+            ctx.lineTo(currentX, currentY)
+            if (utensil === 1) {
+                ctx.lineJoin = 'round';
+                ctx.miterLimit = 2;
+                ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2);
+            } else if (utensil === 0) {
+                ctx.lineJoin = 'round';
+                ctx.miterLimit = 2;
+                ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
+            }
+    
+            ctx.stroke()
+            
+    
+            prevX = currentX
+            prevY = currentY
+            
         }
-
-        let currentX = e.clientX
-        let currentY = e.clientY
-
-        ctx.beginPath()
-        ctx.moveTo(prevX, prevY)
-        ctx.lineTo(currentX, currentY)
-        if (utensil === 1) {
-            ctx.lineJoin = 'round';
-            ctx.miterLimit = 2;
-            ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2);
-        } else if (utensil === 0) {
-            ctx.lineJoin = 'round';
-            ctx.miterLimit = 2;
-            ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
-        }
-
-        ctx.stroke()
-        
-
-        prevX = currentX
-        prevY = currentY
+    } else if (mode === 1) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (!isDragging) {return;}
         
     }
 })
