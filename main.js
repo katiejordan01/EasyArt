@@ -3,17 +3,11 @@ const canvas2 = document.getElementById("CursorLayer");
 
 canvas2.width = window.innerWidth;
 canvas2.height = window.innerHeight;
-// canvas2.style.zIndex = 8;
+
 canvas2.style.position = "absolute";
 canvas2.style.border = '1px solid #000';
 var selectedWidth = 0;
 var selectedHeight = 0;
-// canvas2.style.marginLeft = "10%";
-
-
-// var body = document.getElementsByTagName("body")[0];
-// body.appendChild(canvas2);
-// cursorLayer = document.getElementById("CursorLayer");
 
 const ctx2 = canvas2.getContext("2d");
 canvas.height = window.innerHeight
@@ -48,7 +42,6 @@ let clrs = document.querySelectorAll(".stroke");
 clrs = Array.from(clrs);
 clrs.forEach(clr => {
     clr.addEventListener("click", (e) => {
-        console.log(e.target.value);
         ctx.strokeStyle = e.target.value;
         color = e.target.value;
     })
@@ -101,9 +94,6 @@ let airbrushBtn = document.querySelector(".airbrush")
 airbrushBtn.addEventListener("click", () => {
     utensil = 1;
     mode = 0;
-    // let rgb = hexToRgb(color);
-    // console.log(rgb);
-    // ctx.strokeStyle = 'red';
     ctx.globalAlpha = 0.05;
 
 })
@@ -114,13 +104,6 @@ selectBtn.addEventListener("click", () => {
     console.log(mode);
 })
 
-// window.addEventListener("click", (e) => {
-//     if (mode === 0) {
-
-//     } else if (mode === 1) {
-//         ctx2.clearRect(0,0,canvas.width,canvas.height);
-//     }
-// })
 
 window.addEventListener("mousedown", (e) => {
     if (mode === 0) {
@@ -194,13 +177,10 @@ window.addEventListener("mousemove", (e) => {
 })
 document.addEventListener('keypress', (event) => {
     var name = event.key;
-    var code = event.code;
-    console.log("got here");
     if (name === "q") {
         if (mode === 0) {
 
         } else if (mode === 1) {
-            console.log("got here");
             ctx.clearRect(startX, startY, selectedWidth, selectedHeight);
             ctx2.clearRect(0,0,canvas.width,canvas.height);
         }
