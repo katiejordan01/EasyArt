@@ -114,6 +114,13 @@ selectBtn.addEventListener("click", () => {
     console.log(mode);
 })
 
+// window.addEventListener("click", (e) => {
+//     if (mode === 0) {
+
+//     } else if (mode === 1) {
+//         ctx2.clearRect(0,0,canvas.width,canvas.height);
+//     }
+// })
 
 window.addEventListener("mousedown", (e) => {
     if (mode === 0) {
@@ -135,6 +142,11 @@ window.addEventListener("mouseup", (e) => {
         draw = false
     } else if (mode === 1) {
         isDragging = false;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        ctx2.clearRect(0,0,canvas2.width, canvas2.height);
+        drawRectangle(mouseX, mouseY)
     }
 })
 
