@@ -50,6 +50,7 @@ clrs.forEach(clr => {
     clr.addEventListener("click", (e) => {
         ctx.strokeStyle = e.target.value;
         color = e.target.value;
+        mode = 0;
     })
     clr.addEventListener('change', e => {
         ctx.strokeStyle = e.target.value;
@@ -137,7 +138,7 @@ window.addEventListener("mousedown", (e) => {
                     ctx2.fillStyle = gradient;
                     ctx2.borderRadius = '50%';
                     ctx2.fillRect(e.clientX-100, e.clientY-100, 200, 200, 200);
-                    // ctx2.fill();
+
 
                 }
             }, 1000);
