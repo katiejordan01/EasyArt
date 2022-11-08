@@ -1,20 +1,21 @@
 const canvas = document.getElementById("canvas")
-const canvas2 = document.createElement('canvas');
+const canvas2 = document.getElementById("CursorLayer");
 
-canvas2.id = "CursorLayer";
-canvas2.width = 1224;
-canvas2.height = 768;
-canvas2.style.zIndex = 8;
+canvas2.width = window.innerWidth;
+canvas2.height = window.innerHeight;
+// canvas2.style.zIndex = 8;
 canvas2.style.position = "absolute";
-canvas2.style.border = "2px";
-canvas2.marginLeft = "50px";
+canvas2.style.border = '1px solid #000';
+var selectedWidth = 0;
+var selectedHeight = 0;
+// canvas2.style.marginLeft = "10%";
 
 
-var body = document.getElementsByTagName("body")[0];
-body.appendChild(canvas2);
-cursorLayer = document.getElementById("CursorLayer");
+// var body = document.getElementsByTagName("body")[0];
+// body.appendChild(canvas2);
+// cursorLayer = document.getElementById("CursorLayer");
 
-ctx2 = canvas2.getContext("2d");
+const ctx2 = canvas2.getContext("2d");
 canvas.height = window.innerHeight
 canvas.width = window.innerWidth
 const colorSelector = document.getElementById('stroke');
@@ -80,7 +81,7 @@ thickness.addEventListener('mouseup', () => {
 let clearBtn = document.querySelector(".clear")
 clearBtn.addEventListener("click", () => {
     // Clearning the entire canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.clearRect(10, 0, canvas.width, canvas.height)
 })
 
 let penBtn = document.querySelector(".pen")
@@ -119,8 +120,9 @@ window.addEventListener("mousedown", (e) => {
         draw = true;
     } else if (mode === 1) {
         isDragging = true;
-        ctx2.fillStyle="skyblue";
-        ctx2.strokeStyle="lightgray";
+        ctx2.fillStyle="transparent";
+        ctx2.setLineDash([10,10])
+        ctx2.strokeStyle="blue";
         ctx2.lineWidth=3;
         startX = e.clientX;
         startY = e.clientY;
@@ -178,6 +180,20 @@ window.addEventListener("mousemove", (e) => {
         
     }
 })
+document.addEventListener('keypress', (event) => {
+    var name = event.key;
+    var code = event.code;
+    console.log("got here");
+    if (name === "q") {
+        if (mode === 0) {
+
+        } else if (mode === 1) {
+            console.log("got here");
+            ctx.clearRect(startX, startY, selectedWidth, selectedHeight);
+            ctx2.clearRect(0,0,canvas.width,canvas.height);
+        }
+    }
+})
 
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -189,10 +205,10 @@ function hexToRgb(hex) {
   }
 
   function drawRectangle(mouseX,mouseY){
-    var width=mouseX-startX;
-    var height=mouseY-startY;
-    ctx.beginPath();
-    ctx.rect(startX,startY,width,height);
-    ctx.fill();
-    ctx.stroke();
+    selectedWidth=mouseX-startX;
+    selectedHeight=mouseY-startY;
+    ctx2.beginPath();
+    ctx2.rect(startX,startY,selectedWidth,selectedHeight);
+    ctx2.fill();
+    ctx2.stroke();
 }
