@@ -115,6 +115,7 @@ window.addEventListener("mousedown", (e) => {
         down = true;
         console.log(moved);
         moved = false;
+        ctx2.clearRect(0,0,canvas2.width, canvas2.height);
         if (!moved) {
             setTimeout(function() {
                 if (!moved) {
@@ -129,8 +130,8 @@ window.addEventListener("mousedown", (e) => {
 
                     ctx2.fillStyle = gradient;
                     ctx2.borderRadius = '50%';
-                    ctx2.roundRect(e.clientX-100, e.clientY-100, 200, 200, 200);
-                    ctx2.fill();
+                    ctx2.fillRect(e.clientX-100, e.clientY-100, 200, 200, 200);
+                    // ctx2.fill();
 
                 }
             }, 1000);
