@@ -34,6 +34,8 @@ let lineWidth = 10;
 
 ctx.lineWidth = lineWidth
 
+let selectingColor = false;
+
 let draw = false;
 //used to check if mouse is down and moved or just down (click and hold functionality)
 let moved, down = false;
@@ -117,6 +119,7 @@ window.addEventListener("mousedown", (e) => {
         if (!moved) {
             setTimeout(function() {
                 if (!moved) {
+                    selectingColor = true;
                     const gradient = ctx2.createConicGradient(0, e.clientX, e.clientY);
 
                     gradient.addColorStop(0, "red");
@@ -152,6 +155,12 @@ window.addEventListener("mouseup", (e) => {
         moved = true;
         clrDraw = true;
         draw = false
+        if (selectingColor) {
+            const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
+            const [r, g, b] = imgData.data;
+            console.log(r + g+ b);  
+        }
+        selectingColor = false;
         ctx2.clearRect(0,0,canvas.width, canvas.height)
     } else if (mode === 1) {
         isDragging = false;
@@ -166,7 +175,7 @@ window.addEventListener("mouseup", (e) => {
 window.addEventListener("mousemove", (e) => {
     if (mode === 0) {
         moved = true;
-        if (!selecting) {
+        if (!selecting && !selectingColor) {
             if(prevX == null || prevY == null || !draw) {
                 prevX = e.clientX
                 prevY = e.clientY
