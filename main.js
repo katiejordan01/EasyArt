@@ -161,6 +161,7 @@ window.addEventListener("mouseup", (e) => {
             console.log(r + g+ b);
             color = rgbToHex(r,g,b);
             ctx.strokeStyle = color;
+            clrs[0].value = color;
             console.log(rgbToHex(r,g,b))
         }
         selectingColor = false;
