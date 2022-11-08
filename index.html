@@ -9,18 +9,22 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
+    <canvas id="CursorLayer"></canvas>
     <div class="title">
         <h1>EasyArt</h1>
     </div>
     <div class="side" id="side">
         <button id="pen">Pen</button>
-        <!-- <button class='airbrush'>Airbrush</button> -->
+        <button class="pencil">Pencil</button>
+        <button class='airbrush'>Airbrush</button>
         <button id="eraser">eraser</button>
         <button id="text">text</button>
-        <button id="clear">clear</button>
-        <label for="lineWidth">Line Width</label>
-        <input id="lineWidth" name='lineWidth' type="number" value="5">
-
+        <button class="select">select</button>
+        <button id="clear">clear</button>    
+        <input type="range"id="thickness" name="thickness" min="5" max="15">
+        <Label for="thickness">Thickness</Label>
+        <!-- <label for="lineWidth">Line Width</label> -->
+        <!-- <input id="lineWidth" name='lineWidth' type="number" value="5"> -->
     </div>
     <div class="nav">
         <!-- We will be accessing the data-clr in JavaScript -->

@@ -84,6 +84,10 @@ button{
     padding: 6px; */
 
 }
+
 input {
     width: 50%;
+}
+#thickness {
+    height: 10%;
 }
