@@ -5,7 +5,6 @@ canvas2.width = window.innerWidth;
 canvas2.height = window.innerHeight;
 
 canvas2.style.position = "absolute";
-canvas2.style.border = '1px solid #000';
 var selectedWidth = 0;
 var selectedHeight = 0;
 
@@ -165,7 +164,7 @@ window.addEventListener("mouseup", (e) => {
             console.log(rgbToHex(r,g,b))
         }
         selectingColor = false;
-        ctx2.clearRect(0,0,canvas.width, canvas.height)
+        ctx2.clearRect(0,0,canvas2.width, canvas2.height)
     } else if (mode === 1) {
         isDragging = false;
         mouseX = e.clientX;
