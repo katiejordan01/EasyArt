@@ -16,6 +16,7 @@ let thickness = document.getElementById("thickness");
 
 // canvas2.style.marginTop = "-" + canvas.height+ "px";
 canvas2.style.top = '0px'
+canvas2.style.left = '0px'
 
 const ctx = canvas.getContext("2d")
 
