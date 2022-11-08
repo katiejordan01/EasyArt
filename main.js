@@ -158,7 +158,10 @@ window.addEventListener("mouseup", (e) => {
         if (selectingColor) {
             const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
             const [r, g, b] = imgData.data;
-            console.log(r + g+ b);  
+            console.log(r + g+ b);
+            color = rgbToHex(r,g,b);
+            ctx.strokeStyle = color;
+            console.log(rgbToHex(r,g,b))
         }
         selectingColor = false;
         ctx2.clearRect(0,0,canvas.width, canvas.height)
@@ -228,7 +231,7 @@ document.addEventListener('keypress', (event) => {
 })
 
 document.addEventListener('scroll', (event) => {
-    console.log(event.target);
+    console.log(event.deltaY);
     thickness.value--;
 })
 
@@ -239,6 +242,9 @@ function hexToRgb(hex) {
       g: parseInt(result[2], 16),
       b: parseInt(result[3], 16)
     } : null;
+  }
+  function rgbToHex(r, g, b) {
+    return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
   }
 
   function drawRectangle(mouseX,mouseY){
