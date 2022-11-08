@@ -218,6 +218,11 @@ document.addEventListener('keypress', (event) => {
     }
 })
 
+document.addEventListener('scroll', (event) => {
+    console.log(event.target);
+    thickness.value--;
+})
+
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
