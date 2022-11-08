@@ -123,10 +123,13 @@ window.addEventListener("mousedown", (e) => {
                     const gradient = ctx2.createConicGradient(0, e.clientX, e.clientY);
 
                     gradient.addColorStop(0, "red");
-                    gradient.addColorStop(0.25, "orange");
-                    gradient.addColorStop(0.5, "yellow");
-                    gradient.addColorStop(0.75, "green");
-                    gradient.addColorStop(1, "blue");
+                    gradient.addColorStop(1/7, "orange");
+                    gradient.addColorStop(2/7, "yellow");
+                    gradient.addColorStop(3/7, "green");
+                    gradient.addColorStop(4/7, "blue");
+                    gradient.addColorStop(5/7, "black");
+                    gradient.addColorStop(6/7, "white");
+                    gradient.addColorStop(1, "red");
 
                     ctx2.fillStyle = gradient;
                     ctx2.borderRadius = '50%';
