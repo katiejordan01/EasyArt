@@ -23,7 +23,8 @@ let utensil = 0;
 let color = '#000000';
 let isDragging = false;
 var startX, startY;
-var mouseX, mouseY;
+var mouseX, mouseY = 0;
+
 
 
 let prevX = null
@@ -115,9 +116,20 @@ window.addEventListener("mousedown", (e) => {
         moved = false;
         if (!moved) {
             setTimeout(function() {
-                console.log("hi");
                 if (!moved) {
-                    console.log("hey"); 
+                    const gradient = ctx2.createConicGradient(0, e.clientX, e.clientY);
+
+                    gradient.addColorStop(0, "red");
+                    gradient.addColorStop(0.25, "orange");
+                    gradient.addColorStop(0.5, "yellow");
+                    gradient.addColorStop(0.75, "green");
+                    gradient.addColorStop(1, "blue");
+
+                    ctx2.fillStyle = gradient;
+                    ctx2.borderRadius = '50%';
+                    ctx2.roundRect(e.clientX-100, e.clientY-100, 200, 200, 200);
+                    ctx2.fill();
+
                 }
             }, 1000);
         } 
@@ -137,8 +149,10 @@ window.addEventListener("mousedown", (e) => {
 window.addEventListener("mouseup", (e) => {
     if (mode === 0) {
         down = false;
+        moved = true;
         clrDraw = true;
         draw = false
+        ctx2.clearRect(0,0,canvas.width, canvas.height)
     } else if (mode === 1) {
         isDragging = false;
         mouseX = e.clientX;
