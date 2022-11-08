@@ -121,6 +121,7 @@ window.addEventListener("mousedown", (e) => {
         if (!moved) {
             setTimeout(function() {
                 if (!moved) {
+                    //fix bug
                     selectingColor = true;
                     const gradient = ctx2.createConicGradient(0, e.clientX, e.clientY);
 
