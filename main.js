@@ -1,8 +1,6 @@
 const canvas = document.getElementById("canvas")
 const canvas2 = document.getElementById("CursorLayer");
 
-canvas2.width = window.innerWidth;
-canvas2.height = window.innerHeight;
 
 canvas2.style.position = "absolute";
 var selectedWidth = 0;
@@ -11,10 +9,13 @@ var selectedHeight = 0;
 const ctx2 = canvas2.getContext("2d");
 canvas.height = window.innerHeight
 canvas.width = window.innerWidth
+canvas2.width = window.innerWidth;
+canvas2.height = window.innerHeight;
 const colorSelector = document.getElementById('stroke');
 let thickness = document.getElementById("thickness");
 
-canvas2.style.marginTop = "-" + canvas.height+ "px";
+// canvas2.style.marginTop = "-" + canvas.height+ "px";
+canvas2.style.top = '0px'
 
 const ctx = canvas.getContext("2d")
 
