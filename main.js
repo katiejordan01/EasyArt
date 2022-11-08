@@ -34,6 +34,8 @@ let lineWidth = 10;
 ctx.lineWidth = lineWidth
 
 let draw = false;
+//used to check if mouse is down and moved or just down (click and hold functionality)
+let moved, down = false;
 // modes: 0-draw 1-select 2-recognition
 let mode = 0;
 const selR= 0, selG = 0, selB = 0;
@@ -108,6 +110,19 @@ selectBtn.addEventListener("click", () => {
 window.addEventListener("mousedown", (e) => {
     if (mode === 0) {
         draw = true;
+        down = true;
+        console.log(moved);
+        moved = false;
+        if (!moved) {
+            setTimeout(function() {
+                console.log("hi");
+                if (!moved) {
+                    console.log("hey"); 
+                }
+            }, 1000);
+        } 
+        
+        console.log(moved);
     } else if (mode === 1) {
         isDragging = true;
         ctx2.fillStyle="transparent";
@@ -121,6 +136,7 @@ window.addEventListener("mousedown", (e) => {
 })
 window.addEventListener("mouseup", (e) => {
     if (mode === 0) {
+        down = false;
         clrDraw = true;
         draw = false
     } else if (mode === 1) {
@@ -135,6 +151,7 @@ window.addEventListener("mouseup", (e) => {
 
 window.addEventListener("mousemove", (e) => {
     if (mode === 0) {
+        moved = true;
         if (!selecting) {
             if(prevX == null || prevY == null || !draw) {
                 prevX = e.clientX
