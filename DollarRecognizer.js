@@ -160,6 +160,7 @@ function DollarRecognizer() // constructor
 				d = OptimalCosineDistance(this.Unistrokes[i].Vector, candidate.Vector); // Protractor
 			else
 				d = DistanceAtBestAngle(candidate.Points, this.Unistrokes[i], -AngleRange, +AngleRange, AnglePrecision); // Golden Section Search (original $1)
+			console.log(d + " " + b)
 			if (d < b) {
 				b = d; // best (least) distance
 				u = i; // unistroke index
@@ -277,6 +278,7 @@ function OptimalCosineDistance(v1, v2) // for Protractor
 }
 function DistanceAtBestAngle(points, T, a, b, threshold)
 {
+
 	var x1 = Phi * a + (1.0 - Phi) * b;
 	var f1 = DistanceAtAngle(points, T, x1);
 	var x2 = (1.0 - Phi) * a + Phi * b;
@@ -297,6 +299,7 @@ function DistanceAtBestAngle(points, T, a, b, threshold)
 			f2 = DistanceAtAngle(points, T, x2);
 		}
 	}
+	console.log(f1);
 	return Math.min(f1, f2);
 }
 function DistanceAtAngle(points, T, radians)
@@ -331,6 +334,7 @@ function PathDistance(pts1, pts2)
 	var d = 0.0;
 	for (var i = 0; i < pts1.length; i++) // assumes pts1.length == pts2.length
 		d += Distance(pts1[i], pts2[i]);
+	console.log(d)
 	return d / pts1.length;
 }
 function PathLength(points)
@@ -342,8 +346,11 @@ function PathLength(points)
 }
 function Distance(p1, p2)
 {
+	console.log("p2" + p2.X)
 	var dx = p2.X - p1.X;
 	var dy = p2.Y - p1.Y;
 	return Math.sqrt(dx * dx + dy * dy);
 }
 function Deg2Rad(d) { return (d * Math.PI / 180.0); }
+
+export {DollarRecognizer}

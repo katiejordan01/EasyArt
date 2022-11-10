@@ -1,14 +1,17 @@
-const canvas = document.getElementById("canvas")
+import {DollarRecognizer}from "./DollarRecognizer.js";
+
+const canvas = document.getElementById("canvas");
 const canvas2 = document.getElementById("CursorLayer");
 
+var dollar = new DollarRecognizer();
 
 canvas2.style.position = "absolute";
 var selectedWidth = 0;
 var selectedHeight = 0;
 
 const ctx2 = canvas2.getContext("2d");
-canvas.height = window.innerHeight
-canvas.width = window.innerWidth
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
 canvas2.width = window.innerWidth;
 canvas2.height = window.innerHeight;
 const colorSelector = document.getElementById('stroke');
@@ -26,6 +29,8 @@ let isDragging = false;
 var startX, startY;
 var mouseX, mouseY = 0;
 
+var points = [];
+
 
 
 let prevX = null
@@ -36,6 +41,8 @@ let lineWidth = 10;
 ctx.lineWidth = lineWidth
 
 let selectingColor = false;
+
+let clrDraw;
 
 let draw = false;
 //used to check if mouse is down and moved or just down (click and hold functionality)
@@ -172,7 +179,12 @@ window.addEventListener("mouseup", (e) => {
             console.log(rgbToHex(r,g,b))
         }
         selectingColor = false;
+        if (points.length !== 0) {
+            console.log(dollar.Recognize(points, false));
+        }
+        
         ctx2.clearRect(0,0,canvas2.width, canvas2.height)
+        points = [];
     } else if (mode === 1) {
         isDragging = false;
         mouseX = e.clientX;
@@ -192,6 +204,9 @@ window.addEventListener("mousemove", (e) => {
                 prevY = e.clientY
                 return
             }
+            var point = [{X: e.clientX, Y: e.clientY}];
+            points.push(point);
+            console.log(points);
     
             let currentX = e.clientX
             let currentY = e.clientY
