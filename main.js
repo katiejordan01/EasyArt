@@ -26,7 +26,16 @@ let isDragging = false;
 var startX, startY;
 var mouseX, mouseY = 0;
 
-
+let iconOffsetX;
+let iconOffsetY;
+//holds state of which tool is being used
+let currentToolState = null;
+//an "enum" to hold all current and future tools that we use as states
+const Tool = {
+    Eraser: 'Eraser',
+    Pen: 'Pen',
+    Text: 'Text',
+}
 
 let prevX = null
 let prevY = null
@@ -90,19 +99,27 @@ penBtn.addEventListener("click", () => {
     utensil = 0;
     ctx.globalAlpha = 1;
     console.log(utensil);
+    penMode();
 })
 let pencilBtn = document.querySelector(".pencil")
 pencilBtn.addEventListener("click", () => {
     mode = 0;
     utensil = 2;
     ctx.globalAlpha = .9;
+    pencilMode();
+})
+let eraserBtn = document.querySelector(".eraser");
+eraserBtn.addEventListener("click", () => {
+    eraserMode();
 })
 let airbrushBtn = document.querySelector(".airbrush")
 airbrushBtn.addEventListener("click", () => {
     utensil = 1;
     mode = 0;
     ctx.globalAlpha = 0.05;
-
+    iconOffsetX = -2;
+    iconOffsetY = -25;
+    document.body.style.cursor = "url(https://findicons.com/files/icons/2579/iphone_icons/40/airbrush.png), auto";
 })
 
 let selectBtn = document.querySelector(".select")
@@ -110,6 +127,35 @@ selectBtn.addEventListener("click", () => {
     mode = 1;
     console.log(mode);
 })
+
+function penMode() {
+    console.log("I'm using the pen now!") //sets the state to Pen
+    currentToolState = Tool.Pen;
+    iconOffsetX = -2;
+    iconOffsetY = -47;
+    ctx.lineCap = 'round';
+    // ctx.lineWidth = lineWidthSelector.value;
+    // ctx.strokeStyle = "#000000"
+    document.body.style.cursor = "url(https://findicons.com/files/icons/2166/oxygen/48/pen.png), auto"; //setting the icon
+}
+function pencilMode() {
+    console.log("I'm using the pencil now!") //sets the state to Pen
+    currentToolState = Tool.Pencil;
+    iconOffsetX = -2;
+    iconOffsetY = -25;
+    ctx.lineCap = 'butt';
+    // ctx.lineWidth = lineWidthSelector.value;
+    // ctx.strokeStyle = "#000000"
+    document.body.style.cursor = "url(https://findicons.com/files/icons/1620/crystal_project/22/14_pencil.png), auto"; //setting the icon
+}
+function eraserMode() {
+    console.log("I'm using the eraser now!");
+    currentToolState = Tool.Eraser; //sets the state to Eraser
+    iconOffsetY = -14;
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.globalAlpha = 1;
+    document.body.style.cursor = "url(https://findicons.com/files/icons/1156/fugue/16/eraser.png), auto"; //setting a different icon from the internet
+}
 
 
 window.addEventListener("mousedown", (e) => {
@@ -197,16 +243,16 @@ window.addEventListener("mousemove", (e) => {
             let currentY = e.clientY
     
             ctx.beginPath()
-            ctx.moveTo(prevX, prevY)
-            ctx.lineTo(currentX, currentY)
+            ctx.moveTo(prevX - iconOffsetX, prevY - iconOffsetY)
+            ctx.lineTo(currentX - iconOffsetX, currentY - iconOffsetY)
             if (utensil === 1) {
                 ctx.lineJoin = 'round';
                 ctx.miterLimit = 2;
                 ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2);
             } else if (utensil === 0) {
-                ctx.lineJoin = 'round';
-                ctx.miterLimit = 2;
-                ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
+                // ctx.lineJoin = 'round';
+                // ctx.miterLimit = 2;
+                // ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
             }
     
             ctx.stroke()
