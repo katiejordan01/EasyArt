@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <title>EasyArt</title>
 </head>
-<body>
+<body onmousedown="return false" onselectstart="return false">
     <canvas id="canvas"></canvas>
     <canvas id="CursorLayer"></canvas>
     <div class="title">
@@ -19,16 +19,17 @@
         <button class='airbrush'>Airbrush</button>
         <button class="clear">Clear</button>
         <button class="select">Select</button>
-        <button class="eraser">Eraser</button>
         <button class="text">Text</button>
+        <button class="paintBucket">Paint Bucket</button>
+        <button class="eraser">Eraser</button>
         <input type="range"id="thickness" name="thickness" min="5" max="15">
         <Label for="thickness">Thickness</Label>
 
     </div>
     <div class="nav">
         <!-- We will be accessing the data-clr in JavaScript -->
-        <input class="stroke" name='stroke' type="color" value="#F8F8FF">
         <input class="stroke" name='stroke' type="color" >
+        <input class="stroke" name='stroke' type="color" value="#F8F8FF">
         <input class="stroke" name='stroke' type="color" value="#6495ED">
         <input class="stroke" name='stroke' type="color" value="#DC143C">
         <input class="stroke" name='stroke' type="color" value="#9932CC">

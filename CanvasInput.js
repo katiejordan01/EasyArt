@@ -950,32 +950,32 @@
         y = mouse.y,
         isOver = self._overInput(x, y);
 
-      // if (isOver && self._canvas) {
-      //   // self._canvas.style.cursor = 'text';
-      //   self._wasOver = true;
-      // } else if (self._wasOver && self._canvas) {
-      //   // self._canvas.style.cursor = 'default';
-      //   self._wasOver = false;
-      // }
+      if (isOver && self._canvas) {
+        // self._canvas.style.cursor = 'text';
+        self._wasOver = true;
+      } else if (self._wasOver && self._canvas) {
+        // self._canvas.style.cursor = 'default';
+        self._wasOver = false;
+      }
 
-      // if (self._hasFocus && self._selectionStart >= 0) {
-      //   var curPos = self._clickPos(x, y),
-      //     start = Math.min(self._selectionStart, curPos),
-      //     end = Math.max(self._selectionStart, curPos);
+      if (self._hasFocus && self._selectionStart >= 0) {
+        var curPos = self._clickPos(x, y),
+          start = Math.min(self._selectionStart, curPos),
+          end = Math.max(self._selectionStart, curPos);
 
-      //   if (!isOver) {
-      //     self._selectionUpdated = true;
-      //     self._endSelection = true;
-      //     delete self._selectionStart;
-      //     self.render();
-      //     return;
-      //   }
+        if (!isOver) {
+          self._selectionUpdated = true;
+          self._endSelection = true;
+          delete self._selectionStart;
+          self.render();
+          return;
+        }
 
-      //   if (self._selection[0] !== start || self._selection[1] !== end) {
-      //     self._selection = [start, end];
-      //     self.render();
-      //   }
-      // }
+        if (self._selection[0] !== start || self._selection[1] !== end) {
+          self._selection = [start, end];
+          self.render();
+        }
+      }
     },
 
     /**
@@ -993,11 +993,11 @@
       self._mouseDown = isOver;
 
       // start the selection drag if inside the input
-      // if (self._hasFocus && isOver) {
-      //   self._selectionStart = self._clickPos(x, y);
-      // }
+      if (self._hasFocus && isOver) {
+        self._selectionStart = self._clickPos(x, y);
+      }
     },
-
+////////////////////////////////////////////
     /**
      * Fired with the mouseup event to end a selection drag.
      * @param  {Event} e    The mouseup event.
@@ -1010,13 +1010,13 @@
 
       // update selection if a drag has happened
       var isSelection = self._clickPos(x, y) !== self._selectionStart;
-      // if (self._hasFocus && self._selectionStart >= 0 && self._overInput(x, y) && isSelection) {
-      //   self._selectionUpdated = true;
-      //   delete self._selectionStart;
-      //   self.render();
-      // } else {
-      //   delete self._selectionStart;
-      // }
+      if (self._hasFocus && self._selectionStart >= 0 && self._overInput(x, y) && isSelection) {
+        self._selectionUpdated = true;
+        delete self._selectionStart;
+        self.render();
+      } else {
+        delete self._selectionStart;
+      }
 
       self.click(e, self);
     },
