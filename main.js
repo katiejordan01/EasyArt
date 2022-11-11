@@ -5,7 +5,7 @@ const canvas2 = document.getElementById("CursorLayer");
 canvas2.style.position = "absolute";
 var selectedWidth = 0;
 var selectedHeight = 0;
-
+const ctx = canvas.getContext("2d", {willReadFrequently: true});
 const ctx2 = canvas2.getContext("2d");
 canvas.height = window.innerHeight
 canvas.width = window.innerWidth
@@ -14,12 +14,12 @@ canvas2.height = window.innerHeight;
 const colorSelector = document.getElementById('stroke');
 let thickness = document.getElementById("thickness");
 var textboxes = [];
+var changeColor = "#000000";
+var currentPixel;
 
 // canvas2.style.marginTop = "-" + canvas.height+ "px";
 canvas2.style.top = '0px'
 canvas2.style.left = '0px'
-
-const ctx = canvas.getContext("2d")
 
 let utensil = 0;
 let color = '#000000';
@@ -38,7 +38,8 @@ const Tool = {
     Text: 'Text',
     Airbrush: 'Airbrush',
     Select: 'Select',
-    Pencil: 'Pencil'
+    Pencil: 'Pencil',
+    PaintBucket: 'Paint Bucket',
 }
 
 let prevX = null
@@ -62,6 +63,7 @@ clrs = Array.from(clrs);
 clrs.forEach(clr => {
     clr.addEventListener("click", (e) => {
         ctx.strokeStyle = e.target.value;
+        changeColor = ctx.strokeStyle;
         color = e.target.value;
         mode = 0;
     })
@@ -118,6 +120,12 @@ eraserBtn.addEventListener("click", () => {
     utensil = 0;
     eraserMode();
 })
+let paintBucketBtn = document.querySelector(".paintBucket");
+paintBucketBtn.addEventListener("click", () => {
+    utensil = -1;
+    mode = 0;
+    paintBucketMode();
+})
 let textBtn = document.querySelector(".text");
 textBtn.addEventListener("click", () => {
     textMode();
@@ -136,7 +144,16 @@ selectBtn.addEventListener("click", () => {
     console.log(mode);
     selectMode();
 })
-
+function paintBucketMode() {
+    console.log("I'm using the paint bucket now now!");
+    currentToolState = Tool.PaintBucket; //sets the state to Paint Bucket
+    iconOffsetY = -45;
+    iconOffsetX = -49;
+    ctx.linecap = "round"
+    ctx.strokeStyle = changeColor;
+    ctx.globalAlpha = 1;
+    document.body.style.cursor = "url(https://findicons.com/files/icons/2332/super_mono/64/paint_bucket.png), auto";
+}
 function penMode() {
     console.log("I'm using the pen now!") //sets the state to Pen
     currentToolState = Tool.Pen;
@@ -144,16 +161,16 @@ function penMode() {
     iconOffsetY = -47;
     ctx.lineCap = 'round';
     // ctx.lineWidth = lineWidthSelector.value;
-    ctx.strokeStyle = clrs[0].value;
+    ctx.strokeStyle = changeColor;
     document.body.style.cursor = "url(https://findicons.com/files/icons/2166/oxygen/48/pen.png), auto"; //setting the icon
 }
 function pencilMode() {
-    console.log("I'm using the pencil now!") //sets the state to Pen
+    console.log("I'm using the pencil now!") //sets the state to Pencil
     currentToolState = Tool.Pencil;
     iconOffsetX = -2;
     iconOffsetY = -25;
     // ctx.lineWidth = lineWidthSelector.value;
-    ctx.strokeStyle = clrs[0].value;
+    ctx.strokeStyle = changeColor;
     document.body.style.cursor = "url(https://findicons.com/files/icons/1620/crystal_project/22/14_pencil.png), auto"; //setting the icon
 }
 function eraserMode() {
@@ -225,7 +242,25 @@ window.addEventListener("mousedown", (e) => {
 
                 }
             }, 1000);
-        } 
+            if (currentToolState == Tool.PaintBucket) {
+                //pixel testing
+                // const currentPixel = ctx.getImageData(e.clientX - iconOffsetX, e.clientY - iconOffsetY, 1, 1);
+                // const pixelData = currentPixel.data;
+                // const [r,g,b] = pixelData;
+                // console.log(currentPixel);
+                // console.log(currentPixel['data']);
+                // console.log(pixelData);
+                // console.log(r,g,b);
+                // currentPixel['data'][0] = 0;
+                // currentPixel['data'][1] = 0;
+                // currentPixel['data'][2] = 0;
+                // ctx.putImageData(currentPixel, e.clientX - iconOffsetX, e.clientY - iconOffsetY);
+                // color = rgbToHex(r,g,b);
+                // console.log(color);
+                console.log('clickx:', e.clientX - iconOffsetX, 'clicky:', e.clientY - iconOffsetY);
+                floodFill(e.clientX - iconOffsetX, e.clientY - iconOffsetY, changeColor);
+            }
+        }
         
         console.log(moved);
     } else if (mode === 1) {
@@ -259,7 +294,7 @@ window.addEventListener("mouseup", (e) => {
         clrDraw = true;
         draw = false
         if (selectingColor && currentToolState != Tool.Eraser) {
-            const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
+            const imgData = ctx2.getImageData(e.clientX - iconOffsetX, e.clientY - iconOffsetY, 1, 1);
             const [r, g, b] = imgData.data;
             console.log(r + g+ b);
             color = rgbToHex(r,g,b);
@@ -304,7 +339,7 @@ window.addEventListener("mouseup", (e) => {
 window.addEventListener("mousemove", (e) => {
     if (mode === 0) {
         moved = true;
-        if (!selecting && !selectingColor) {
+        if (!selecting && !selectingColor && currentToolState != Tool.PaintBucket) {
             if(prevX == null || prevY == null || !draw) {
                 prevX = e.clientX
                 prevY = e.clientY
@@ -411,4 +446,95 @@ function hexToRgb(hex) {
     ctx2.rect(startX,startY,selectedWidth,selectedHeight);
     ctx2.fill();
     ctx2.stroke();
+}
+
+function getCurrentPixelColor(sr, sc) {
+    // const currentPixel = ctx.getImageData(e.clientX - iconOffsetX, e.clientY - iconOffsetY, 1, 1);
+    // const pixelData = currentPixel.data;
+    // const [r,g,b] = pixelData;
+    currentPixel = ctx.getImageData(sr, sc, 1, 1);
+    const pixelData = currentPixel.data;
+    const [r,g,b] = pixelData;
+    // const current = rgbToHex(r,g,b);
+    console.log(sr,sc,current);
+    return current;
+}
+function setCurrentPixelColor(sr,sc,newColor) { 
+    var r,g,b,d1, d2;
+    var myColor;
+    d1,d2,myColor = hexToRgb(newColor);
+    r = myColor['r'];
+    g = myColor['g'];
+    b = myColor['b'];
+    currentPixel = ctx.getImageData(sr, sc, 1, 1);
+    currentPixel['data'][0] = r;
+    currentPixel['data'][1] = g;
+    currentPixel['data'][2] = b;
+    ctx.putImageData(currentPixel, sr, sc);
+}
+
+
+const floodFill = (sr, sc, newColor) => {
+    //Get the input which needs to be replaced.
+    const current = getCurrentPixelColor(sr,sc);
+    //If the newColor is same as the existing 
+    //Then return the original image.
+    if(current === newColor){
+        return;
+    }
+    
+    //Other wise call the fill function which will fill in the existing image.
+    fill(sr, sc, newColor, current);
+    
+    //Return the image once it is filled
+    return;
+};
+
+const fill = (sr, sc, newColor, current) => {
+    //If row is less than 0
+    if(sr < 0){
+        return;
+    }
+
+    //If column is less than 0
+    if(sc < 0){
+        return;
+    }
+
+    //If row is greater than image length
+    if(sr > canvas.height - 1){
+        return;
+    }
+
+    //If column is greater than image length
+    if(sc > canvas.width - 1){
+        return;
+    }
+
+    //If the current pixel is not which needs to be replaced //TODO: query color //prev:image[sr][sc]
+    var newCurrent = getCurrentPixelColor(sr,sc);
+    // console.log(newCurrent);
+    if(getCurrentPixelColor(sr,sc) != current){
+        return;
+    }
+    
+    //Update the new color //TODO: set color//  image[sr][sc] = newColor;
+    setCurrentPixelColor(sr,sc,newColor);
+    console.log("I set the color of a pixel!");
+
+    //Fill in all four directions
+    //Fill Prev row
+    if (getCurrentPixelColor(sr-1, sc) == current || newColor) {
+        fill(sr - 1, sc, newColor, current);
+    }
+
+    //Fill Prev col
+    fill(sr, sc - 1, newColor, current);
+
+    //Fill Next row
+    fill(sr + 1, sc, newColor, current);
+
+    //Fill next col
+    fill(sr, sc + 1, newColor, current);
+    
 }
