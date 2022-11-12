@@ -433,12 +433,21 @@ function hexToRgb(hex) {
       g: parseInt(result[2], 16),
       b: parseInt(result[3], 16)
     } : null;
-  }
-  function rgbToHex(r, g, b) {
+}
+function rgbToHex(r, g, b) {
     return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
-  }
+}
 
-  function drawRectangle(mouseX,mouseY){
+function rgbaToHex(r,g,b,a) {
+    hex =
+    (r | 1 << 8).toString(16).slice(1) +
+    (g | 1 << 8).toString(16).slice(1) +
+    (b | 1 << 8).toString(16).slice(1) +
+    (a | 1 << 8).toString(16).slice(1);
+    return hex;
+}
+
+function drawRectangle(mouseX,mouseY){
     selectedWidth=mouseX-startX;
     selectedHeight=mouseY-startY;
     ctx2.beginPath();
@@ -453,9 +462,15 @@ function getCurrentPixelColor(sr, sc) {
     // const [r,g,b] = pixelData;
     currentPixel = ctx.getImageData(sr, sc, 1, 1);
     const pixelData = currentPixel.data;
-    const [r,g,b] = pixelData;
-    // const current = rgbToHex(r,g,b);
-    console.log(sr,sc,current);
+    const [r,g,b,a] = pixelData;
+    const current = rgbaToHex(r,g,b,a);
+    // if (a == 0) {
+    //     current = rgbToHex(255,255,255);
+    // } else {
+    //     current = rgbToHex(r,g,b);
+    // }
+    
+    // console.log(sr,sc,current);
     return current;
 }
 function setCurrentPixelColor(sr,sc,newColor) { 
@@ -513,27 +528,32 @@ const fill = (sr, sc, newColor, current) => {
     //If the current pixel is not which needs to be replaced //TODO: query color //prev:image[sr][sc]
     var newCurrent = getCurrentPixelColor(sr,sc);
     // console.log(newCurrent);
-    if(getCurrentPixelColor(sr,sc) != current){
+    if(newCurrent != current){
         return;
     }
     
     //Update the new color //TODO: set color//  image[sr][sc] = newColor;
     setCurrentPixelColor(sr,sc,newColor);
-    console.log("I set the color of a pixel!");
+    // console.log("I set the color of a pixel!");
 
     //Fill in all four directions
     //Fill Prev row
-    if (getCurrentPixelColor(sr-1, sc) == current || newColor) {
+    if (getCurrentPixelColor(sr-1, sc) == current) {
         fill(sr - 1, sc, newColor, current);
     }
 
-    //Fill Prev col
-    fill(sr, sc - 1, newColor, current);
-
     //Fill Next row
-    fill(sr + 1, sc, newColor, current);
+    if (getCurrentPixelColor(sr+1, sc) == current) {
+        fill(sr + 1, sc, newColor, current);
+    }
+
+    //Fill Prev col
+    if (getCurrentPixelColor(sr, sc-1) == current) {
+        fill(sr, sc-1, newColor, current);
+    }
 
     //Fill next col
-    fill(sr, sc + 1, newColor, current);
-    
+    if (getCurrentPixelColor(sr, sc+1) == current) {
+        fill(sr, sc+1, newColor, current);
+    }    
 }
