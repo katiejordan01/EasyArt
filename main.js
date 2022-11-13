@@ -15,6 +15,7 @@ const colorSelector = document.getElementById('stroke');
 let thickness = document.getElementById("thickness");
 var textboxes = [];
 var changeColor = "#000000";
+var paintColor;
 var currentPixel;
 
 // canvas2.style.marginTop = "-" + canvas.height+ "px";
@@ -64,6 +65,7 @@ clrs.forEach(clr => {
     clr.addEventListener("click", (e) => {
         ctx.strokeStyle = e.target.value;
         changeColor = ctx.strokeStyle;
+        console.log('color changed:', e.target.value);
         color = e.target.value;
     })
     clr.addEventListener('change', e => {
@@ -256,7 +258,8 @@ window.addEventListener("mousedown", (e) => {
                 // ctx.putImageData(currentPixel, e.clientX - iconOffsetX, e.clientY - iconOffsetY);
                 // color = rgbToHex(r,g,b);
                 // console.log(color);
-                console.log('clickx:', e.clientX - iconOffsetX, 'clicky:', e.clientY - iconOffsetY);
+                console.log('clickx:', e.clientX - iconOffsetX, 'clicky:', e.clientY - iconOffsetY, 'windowHeight:', window.outerHeight, 'windowWidth:',window.outerWidth);
+                console.log(window);
                 floodFill(e.clientX - iconOffsetX, e.clientY - iconOffsetY, changeColor);
             }
         }
@@ -463,15 +466,15 @@ function getCurrentPixelColor(sr, sc) {
     currentPixel = ctx.getImageData(sr, sc, 1, 1);
     const pixelData = currentPixel.data;
     const [r,g,b,a] = pixelData;
-    const current = rgbaToHex(r,g,b,a);
-    // if (a == 0) {
-    //     current = rgbToHex(255,255,255);
-    // } else {
-    //     current = rgbToHex(r,g,b);
-    // }
+    var currentColor;
+    if (a == 0) {
+        currentColor = "ffffffff";
+    } else {
+        currentColor = rgbaToHex(r,g,b,255);
+    }
     
     // console.log(sr,sc,current);
-    return current;
+    return currentColor;
 }
 function setCurrentPixelColor(sr,sc,newColor) { 
     var r,g,b,d1, d2;
@@ -484,6 +487,7 @@ function setCurrentPixelColor(sr,sc,newColor) {
     currentPixel['data'][0] = r;
     currentPixel['data'][1] = g;
     currentPixel['data'][2] = b;
+    currentPixel['data'][3] = 255;
     ctx.putImageData(currentPixel, sr, sc);
 }
 
@@ -491,16 +495,12 @@ function setCurrentPixelColor(sr,sc,newColor) {
 const floodFill = (sr, sc, newColor) => {
     //Get the input which needs to be replaced.
     const current = getCurrentPixelColor(sr,sc);
-    //If the newColor is same as the existing 
-    //Then return the original image.
+    //If the newColor is same as the existing pixel, then do nothing
     if(current === newColor){
         return;
     }
-    
-    //Other wise call the fill function which will fill in the existing image.
+    //Otherwise fill the pixel
     fill(sr, sc, newColor, current);
-    
-    //Return the image once it is filled
     return;
 };
 
@@ -516,12 +516,12 @@ const fill = (sr, sc, newColor, current) => {
     }
 
     //If row is greater than image length
-    if(sr > canvas.height - 1){
+    if(sr > canvas.width){
         return;
     }
 
     //If column is greater than image length
-    if(sc > canvas.width - 1){
+    if(sc > canvas.height){
         return;
     }
 
@@ -538,8 +538,11 @@ const fill = (sr, sc, newColor, current) => {
 
     //Fill in all four directions
     //Fill Prev row
-    if (getCurrentPixelColor(sr-1, sc) == current) {
+    var leftColor = getCurrentPixelColor(sr-1, sc);
+    if (leftColor == current) {
         fill(sr - 1, sc, newColor, current);
+    } else {
+        // console.log(leftColor, current);
     }
 
     //Fill Next row
