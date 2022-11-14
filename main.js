@@ -17,11 +17,10 @@ canvas2.height = window.innerHeight;
 const colorSelector = document.getElementById('stroke');
 let thickness = document.getElementById("thickness");
 
-function Point(x, y) // constructor
-{
-	this.X = x;
-	this.Y = y;
-}
+var minY = Math.pow(10, 1000);
+var minX = Math.pow(10, 1000);
+var maxY = 0;
+var maxX = 0;
 
 // canvas2.style.marginTop = "-" + canvas.height+ "px";
 canvas2.style.top = '0px'
@@ -82,14 +81,6 @@ thickness.addEventListener('mousedown', () => {
 thickness.addEventListener('mouseup', () => {
     selecting = false;
 })
-// window.addEventListener('scroll', (e) => {
-//     if(e.deltaY > 1) {
-//         console.log(e.deltaY)
-//         thickness.value++;
-//       } else if (e.deltaY < -1) {
-//         thickness.value--;
-//       } 
-// })
 
 
 let clearBtn = document.querySelector(".clear")
@@ -122,7 +113,6 @@ airbrushBtn.addEventListener("click", () => {
 let selectBtn = document.querySelector(".select")
 selectBtn.addEventListener("click", () => {
     mode = 1;
-    console.log(mode);
 })
 
 
@@ -158,7 +148,6 @@ window.addEventListener("mousedown", (e) => {
             }, 1000);
         } 
         
-        console.log(moved);
     } else if (mode === 1) {
         isDragging = true;
         ctx2.fillStyle="transparent";
@@ -179,19 +168,43 @@ window.addEventListener("mouseup", (e) => {
         if (selectingColor) {
             const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
             const [r, g, b] = imgData.data;
-            console.log(r + g+ b);
             color = rgbToHex(r,g,b);
             ctx.strokeStyle = color;
             clrs[0].value = color;
-            console.log(rgbToHex(r,g,b))
         }
         selectingColor = false;
         if (points.length !== 0) {
+            let result = dollar.Recognize(points, false);
+            console.log(result);
+            if (result.Name === 'triangle') {
 
-            console.log(dollar.Recognize(points, false));
+                //make it so that in shape recognition mode, it draws on ctx2 and then the shape pops up on the bottom ctx
+                ctx.clearRect(minX - 10,minY,maxX - minX, maxY - minY);
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo((minX+maxX)/2, (minY));
+                ctx.lineTo(minX, maxY);
+                ctx.lineTo(maxX, maxY);
+                ctx.closePath();
+                ctx.stroke();
+            } else if (result.Name === 'circle') {
+                ctx.clearRect(0,0,canvas.width, canvas.height);
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo((minX+maxX)/2, (minY));
+                ctx.lineTo(minX, maxY);
+                ctx.lineTo(maxX, maxY);
+                ctx.closePath();
+                ctx.stroke();
+            }
+
         }
         
         ctx2.clearRect(0,0,canvas2.width, canvas2.height)
+        minY = Math.pow(10, 1000);
+        minX = Math.pow(10, 1000);
+        maxY = 0;
+        maxX = 0;
         points = [];
     } else if (mode === 1) {
         isDragging = false;
@@ -212,6 +225,18 @@ window.addEventListener("mousemove", (e) => {
                 prevY = e.clientY
                 return
             }
+            if (e.clientX < minX) {
+                minX = e.clientX
+            }
+            if (e.clientX > maxX) {
+                maxX = e.clientX
+            }
+            if (e.clientY < minY) {
+                minY = e.clientY
+            }
+            if (e.clientY > maxY) {
+                maxY = e.clientY
+            } 
             var point = {X: e.clientX, Y: e.clientY};
             points.push(point);
             console.log(points);
