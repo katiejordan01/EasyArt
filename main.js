@@ -17,6 +17,12 @@ canvas2.height = window.innerHeight;
 const colorSelector = document.getElementById('stroke');
 let thickness = document.getElementById("thickness");
 
+function Point(x, y) // constructor
+{
+	this.X = x;
+	this.Y = y;
+}
+
 // canvas2.style.marginTop = "-" + canvas.height+ "px";
 canvas2.style.top = '0px'
 canvas2.style.left = '0px'
@@ -30,6 +36,7 @@ var startX, startY;
 var mouseX, mouseY = 0;
 
 var points = [];
+var arrPoints = [];
 
 
 
@@ -180,6 +187,7 @@ window.addEventListener("mouseup", (e) => {
         }
         selectingColor = false;
         if (points.length !== 0) {
+
             console.log(dollar.Recognize(points, false));
         }
         
@@ -204,7 +212,7 @@ window.addEventListener("mousemove", (e) => {
                 prevY = e.clientY
                 return
             }
-            var point = [{X: e.clientX, Y: e.clientY}];
+            var point = {X: e.clientX, Y: e.clientY};
             points.push(point);
             console.log(points);
     

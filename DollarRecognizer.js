@@ -160,7 +160,7 @@ function DollarRecognizer() // constructor
 				d = OptimalCosineDistance(this.Unistrokes[i].Vector, candidate.Vector); // Protractor
 			else
 				d = DistanceAtBestAngle(candidate.Points, this.Unistrokes[i], -AngleRange, +AngleRange, AnglePrecision); // Golden Section Search (original $1)
-			console.log(d + " " + b)
+			//console.log(d + " " + b)
 			if (d < b) {
 				b = d; // best (least) distance
 				u = i; // unistroke index
@@ -193,8 +193,10 @@ function Resample(points, n)
 	var I = PathLength(points) / (n - 1); // interval length
 	var D = 0.0;
 	var newpoints = new Array(points[0]);
+	console.log(points.length)
 	for (var i = 1; i < points.length; i++)
 	{
+		console.log(points[i])
 		var d = Distance(points[i-1], points[i]);
 		if ((D + d) >= I)
 		{
@@ -209,6 +211,7 @@ function Resample(points, n)
 	}
 	if (newpoints.length == n - 1) // somtimes we fall a rounding-error short of adding the last point, so add it if so
 		newpoints[newpoints.length] = new Point(points[points.length - 1].X, points[points.length - 1].Y);
+	console.log(newpoints)
 	return newpoints;
 }
 function IndicativeAngle(points)
@@ -299,7 +302,7 @@ function DistanceAtBestAngle(points, T, a, b, threshold)
 			f2 = DistanceAtAngle(points, T, x2);
 		}
 	}
-	console.log(f1);
+	//console.log(f1);
 	return Math.min(f1, f2);
 }
 function DistanceAtAngle(points, T, radians)
@@ -334,20 +337,23 @@ function PathDistance(pts1, pts2)
 	var d = 0.0;
 	for (var i = 0; i < pts1.length; i++) // assumes pts1.length == pts2.length
 		d += Distance(pts1[i], pts2[i]);
-	console.log(d)
+	//console.log(d)
 	return d / pts1.length;
 }
 function PathLength(points)
 {
 	var d = 0.0;
 	for (var i = 1; i < points.length; i++)
+		//console.log("points " + points[i])
 		d += Distance(points[i - 1], points[i]);
 	return d;
 }
 function Distance(p1, p2)
 {
-	console.log("p2" + p2.X)
+	//console.log("p2 " + p2.X)
+	//console.log("p1 " + p1.X)
 	var dx = p2.X - p1.X;
+	//console.log("dx " + dx)
 	var dy = p2.Y - p1.Y;
 	return Math.sqrt(dx * dx + dy * dy);
 }
