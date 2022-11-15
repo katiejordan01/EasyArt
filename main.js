@@ -112,9 +112,12 @@ let snapBtn = document.querySelector(".switch")
 snapBtn.addEventListener("change", () => {
     // Clearning the entire canvas
     if (mode === 4) {
+        ctx.strokeStyle = color;
         mode = 0;
         snapping = false;
     } else {
+        ctx.strokeStyle = color;
+        ctx2.strokeStyle = color;
         mode = 4;
         snapping = true;
     }
@@ -250,7 +253,6 @@ window.addEventListener("mouseup", (e) => {
             if (result.Name === 'triangle') {
 
                 //make it so that in shape recognition mode, it draws on ctx2 and then the shape pops up on the bottom ctx
-                ctx.clearRect(minX - 10,minY,maxX - minX, maxY - minY);
                 ctx.strokeStyle = color;
                 ctx.beginPath();
                 ctx.moveTo((minX+maxX)/2, (minY));
@@ -259,13 +261,17 @@ window.addEventListener("mouseup", (e) => {
                 ctx.closePath();
                 ctx.stroke();
             } else if (result.Name === 'circle') {
-                ctx.clearRect(0,0,canvas.width, canvas.height);
+                var centerX = (minX + maxX) / 2;
+                var centerY = (minY + maxY) / 2;
+                var radius = (((maxY-minY)/2)+((maxX-minX)/2))/2;
                 ctx.strokeStyle = color;
                 ctx.beginPath();
-                ctx.moveTo((minX+maxX)/2, (minY));
-                ctx.lineTo(minX, maxY);
-                ctx.lineTo(maxX, maxY);
-                ctx.closePath();
+                ctx.arc(centerX, centerY, radius, 0, 2*Math.PI);
+                ctx.stroke();
+            } else if (result.Name === 'rectangle') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.rect(minX, minY, (maxX-minX), (maxY-minY));
                 ctx.stroke();
             }
 
