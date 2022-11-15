@@ -308,6 +308,13 @@ window.addEventListener("mouseup", (e) => {
                 ctx.lineTo((maxX+minX)/2, maxY);
                 ctx.lineTo(maxX, minY);
                 ctx.stroke();
+            } else if (result.Name === 'caret') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(minX, maxY);
+                ctx.lineTo((maxX+minX)/2, minY);
+                ctx.lineTo(maxX, maxY);
+                ctx.stroke();
             }
 
         }
