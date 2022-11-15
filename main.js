@@ -315,6 +315,22 @@ window.addEventListener("mouseup", (e) => {
                 ctx.lineTo((maxX+minX)/2, minY);
                 ctx.lineTo(maxX, maxY);
                 ctx.stroke();
+            } else if (result.Name === 'left square bracket') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(maxX, minY);
+                ctx.lineTo(minX, minY);
+                ctx.lineTo(minX, maxY);
+                ctx.lineTo(maxX, maxY);
+                ctx.stroke();
+            } else if (result.Name === 'right square bracket') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(minX, minY);
+                ctx.lineTo(maxX, minY);
+                ctx.lineTo(maxX, maxY);
+                ctx.lineTo(minX, maxY);
+                ctx.stroke();
             }
 
         }
