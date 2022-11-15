@@ -233,6 +233,7 @@ window.addEventListener("mouseup", (e) => {
             const [r, g, b] = imgData.data;
             color = rgbToHex(r,g,b);
             ctx.strokeStyle = color;
+            ctx2.strokeStyle = color;
             clrs[0].value = color;
         }
         selectingColor = false;
