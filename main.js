@@ -294,6 +294,13 @@ window.addEventListener("mouseup", (e) => {
                 ctx.moveTo(maxX, minY);
                 ctx.lineTo(minX, maxY);
                 ctx.stroke();
+            } else if (result.Name === 'check') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(minX, (maxY+minY)/2);
+                ctx.lineTo((maxX+minX)/2, maxY);
+                ctx.lineTo(maxX, minY);
+                ctx.stroke();
             }
 
         }
