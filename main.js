@@ -22,6 +22,8 @@ var minX = Math.pow(10, 1000);
 var maxY = 0;
 var maxX = 0;
 
+var snapping = false;
+
 // canvas2.style.marginTop = "-" + canvas.height+ "px";
 canvas2.style.top = '0px'
 canvas2.style.left = '0px'
@@ -35,7 +37,6 @@ var startX, startY;
 var mouseX, mouseY = 0;
 
 var points = [];
-var arrPoints = [];
 
 
 
@@ -55,15 +56,21 @@ let draw = false;
 let moved, down = false;
 // modes: 0-draw 1-select 2-recognition
 let mode = 0;
-const selR= 0, selG = 0, selB = 0;
 
 let clrs = document.querySelectorAll(".stroke");
 clrs = Array.from(clrs);
 clrs.forEach(clr => {
     clr.addEventListener("click", (e) => {
-        ctx.strokeStyle = e.target.value;
-        color = e.target.value;
-        mode = 0;
+        if (!snapping) {
+            ctx.strokeStyle = e.target.value;
+            color = e.target.value;
+            mode = 0; 
+        } else {
+            ctx2.strokeStyle = e.target.value;
+            color = e.target.value;
+            mode = 4;
+        }
+        
     })
     clr.addEventListener('change', e => {
         ctx.strokeStyle = e.target.value;
@@ -72,8 +79,13 @@ clrs.forEach(clr => {
 })
 
 thickness.addEventListener('change', () => {
-    lineWidth = thickness.value;
-    ctx.lineWidth = thickness.value;
+    if (mode === 4) {
+        lineWidth = thickness.value;
+        ctx2.lineWidth = thickness.value;
+    } else {
+        lineWidth = thickness.value;
+        ctx.lineWidth = thickness.value;
+    }
 })
 thickness.addEventListener('mousedown', () => {
     selecting = true;
@@ -87,6 +99,17 @@ let clearBtn = document.querySelector(".clear")
 clearBtn.addEventListener("click", () => {
     // Clearning the entire canvas
     ctx.clearRect(10, 0, canvas.width, canvas.height)
+})
+let snapBtn = document.querySelector(".switch")
+snapBtn.addEventListener("change", () => {
+    // Clearning the entire canvas
+    if (mode === 4) {
+        mode = 0;
+        snapping = false;
+    } else {
+        mode = 4;
+        snapping = true;
+    }
 })
 
 let penBtn = document.querySelector(".pen")
@@ -117,10 +140,9 @@ selectBtn.addEventListener("click", () => {
 
 
 window.addEventListener("mousedown", (e) => {
-    if (mode === 0) {
+    if (mode === 0 || mode === 4) {
         draw = true;
         down = true;
-        console.log(moved);
         moved = false;
         ctx2.clearRect(0,0,canvas2.width, canvas2.height);
         if (!moved) {
@@ -173,6 +195,29 @@ window.addEventListener("mouseup", (e) => {
             clrs[0].value = color;
         }
         selectingColor = false;
+        
+        ctx2.clearRect(0,0,canvas2.width, canvas2.height)
+
+    } else if (mode === 1) {
+        isDragging = false;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        ctx2.clearRect(0,0,canvas2.width, canvas2.height);
+        drawRectangle(mouseX, mouseY)
+    } else if (mode === 4) {
+        down = false;
+        moved = true;
+        clrDraw = true;
+        draw = false
+        if (selectingColor) {
+            const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
+            const [r, g, b] = imgData.data;
+            color = rgbToHex(r,g,b);
+            ctx.strokeStyle = color;
+            clrs[0].value = color;
+        }
+        selectingColor = false;
         if (points.length !== 0) {
             let result = dollar.Recognize(points, false);
             console.log(result);
@@ -205,14 +250,7 @@ window.addEventListener("mouseup", (e) => {
         minX = Math.pow(10, 1000);
         maxY = 0;
         maxX = 0;
-        points = [];
-    } else if (mode === 1) {
-        isDragging = false;
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-
-        ctx2.clearRect(0,0,canvas2.width, canvas2.height);
-        drawRectangle(mouseX, mouseY)
+        points = []; 
     }
 })
 
@@ -225,21 +263,6 @@ window.addEventListener("mousemove", (e) => {
                 prevY = e.clientY
                 return
             }
-            if (e.clientX < minX) {
-                minX = e.clientX
-            }
-            if (e.clientX > maxX) {
-                maxX = e.clientX
-            }
-            if (e.clientY < minY) {
-                minY = e.clientY
-            }
-            if (e.clientY > maxY) {
-                maxY = e.clientY
-            } 
-            var point = {X: e.clientX, Y: e.clientY};
-            points.push(point);
-            console.log(points);
     
             let currentX = e.clientX
             let currentY = e.clientY
@@ -272,6 +295,51 @@ window.addEventListener("mousemove", (e) => {
         ctx2.clearRect(0,0,canvas2.width, canvas2.height);
         drawRectangle(mouseX, mouseY)
         
+    } else if (mode === 4) {
+        moved = true;
+        if (!selecting && !selectingColor) {
+            if(prevX == null || prevY == null || !draw) {
+                prevX = e.clientX
+                prevY = e.clientY
+                return
+            }
+            if (e.clientX < minX) {
+                minX = e.clientX
+            }
+            if (e.clientX > maxX) {
+                maxX = e.clientX
+            }
+            if (e.clientY < minY) {
+                minY = e.clientY
+            }
+            if (e.clientY > maxY) {
+                maxY = e.clientY
+            } 
+            var point = {X: e.clientX, Y: e.clientY};
+            points.push(point);
+    
+            let currentX = e.clientX
+            let currentY = e.clientY
+    
+            ctx2.beginPath()
+            ctx2.moveTo(prevX, prevY)
+            ctx2.lineTo(currentX, currentY)
+            if (utensil === 1) {
+                ctx2.lineJoin = 'round';
+                ctx2.miterLimit = 2;
+                ctx2.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2);
+            } else if (utensil === 0) {
+                ctx2.lineJoin = 'round';
+                ctx2.miterLimit = 2;
+                ctx2.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
+            }
+    
+            ctx2.stroke()
+            
+    
+            prevX = currentX
+            prevY = currentY
+        }
     }
 })
 document.addEventListener('keypress', (event) => {
