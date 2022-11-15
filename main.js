@@ -115,12 +115,14 @@ snapBtn.addEventListener("change", () => {
         ctx.strokeStyle = color;
         ctx2.lineWidth = lineWidth
         ctx2.strokeStyle= color;
+        ctx2.setLineDash([]);
         mode = 0;
         snapping = false;
     } else {
         ctx.strokeStyle = color;
         ctx2.lineWidth = lineWidth
         ctx2.strokeStyle= color;
+        ctx2.setLineDash([]);
         mode = 4;
         snapping = true;
     }
@@ -139,6 +141,7 @@ penBtn.addEventListener("click", () => {
         ctx.strokeStyle = color;
         ctx2.lineWidth = lineWidth
         ctx2.strokeStyle= color;
+        ctx2.setLineDash([]);
     }
 
 })
@@ -155,6 +158,7 @@ pencilBtn.addEventListener("click", () => {
         ctx.strokeStyle = color;
         ctx2.lineWidth = lineWidth
         ctx2.strokeStyle= color;
+        ctx2.setLineDash([]);
     }
 })
 let airbrushBtn = document.querySelector(".airbrush")
@@ -169,7 +173,7 @@ airbrushBtn.addEventListener("click", () => {
         ctx2.globalAlpha = 0.05;
         ctx.strokeStyle = color;
         ctx2.lineWidth = lineWidth
-        ctx2.strokeStyle= color;
+        ctx2.setLineDash([]);
     }
 
 })
@@ -177,6 +181,11 @@ airbrushBtn.addEventListener("click", () => {
 let selectBtn = document.querySelector(".select")
 selectBtn.addEventListener("click", () => {
     mode = 1;
+    //ctx2.fillStyle="transparent";
+    ctx2.setLineDash([10,10])
+    ctx2.strokeStyle="blue";
+    ctx2.lineWidth=3;
+    ctx2.globalAlpha = 1;
 })
 
 
