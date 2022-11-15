@@ -301,6 +301,13 @@ window.addEventListener("mouseup", (e) => {
                 ctx.lineTo((maxX+minX)/2, maxY);
                 ctx.lineTo(maxX, minY);
                 ctx.stroke();
+            } else if (result.Name === 'v') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(minX, minY);
+                ctx.lineTo((maxX+minX)/2, maxY);
+                ctx.lineTo(maxX, minY);
+                ctx.stroke();
             }
 
         }
