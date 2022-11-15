@@ -113,11 +113,14 @@ snapBtn.addEventListener("change", () => {
     // Clearning the entire canvas
     if (mode === 4) {
         ctx.strokeStyle = color;
+        ctx2.lineWidth = lineWidth
+        ctx2.strokeStyle= color;
         mode = 0;
         snapping = false;
     } else {
         ctx.strokeStyle = color;
-        ctx2.strokeStyle = color;
+        ctx2.lineWidth = lineWidth
+        ctx2.strokeStyle= color;
         mode = 4;
         snapping = true;
     }
@@ -133,6 +136,9 @@ penBtn.addEventListener("click", () => {
         mode = 4;
         utensil = 0;
         ctx2.globalAlpha = 1;
+        ctx.strokeStyle = color;
+        ctx2.lineWidth = lineWidth
+        ctx2.strokeStyle= color;
     }
 
 })
@@ -146,6 +152,9 @@ pencilBtn.addEventListener("click", () => {
         mode = 4;
         utensil = 2;
         ctx2.globalAlpha = .9;
+        ctx.strokeStyle = color;
+        ctx2.lineWidth = lineWidth
+        ctx2.strokeStyle= color;
     }
 })
 let airbrushBtn = document.querySelector(".airbrush")
@@ -158,6 +167,9 @@ airbrushBtn.addEventListener("click", () => {
         mode = 4;
         utensil = 0;
         ctx2.globalAlpha = 0.05;
+        ctx.strokeStyle = color;
+        ctx2.lineWidth = lineWidth
+        ctx2.strokeStyle= color;
     }
 
 })
@@ -387,8 +399,7 @@ document.addEventListener('keypress', (event) => {
 })
 
 document.addEventListener('scroll', (event) => {
-    console.log(event.deltaY);
-    thickness.value--;
+    //thickness.value--;
 })
 
 function hexToRgb(hex) {
