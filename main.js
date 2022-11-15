@@ -46,6 +46,7 @@ let selecting = false;
 let lineWidth = 10;
 
 ctx.lineWidth = lineWidth
+ctx2.lineWidth = lineWidth
 
 let selectingColor = false;
 
@@ -73,18 +74,25 @@ clrs.forEach(clr => {
         
     })
     clr.addEventListener('change', e => {
-        ctx.strokeStyle = e.target.value;
-        color = e.target.value;
+        if (!snapping) {
+            ctx.strokeStyle = e.target.value;
+            color = e.target.value;
+            mode = 0; 
+        } else {
+            ctx2.strokeStyle = e.target.value;
+            color = e.target.value;
+            mode = 4;
+        }
     })
 })
 
 thickness.addEventListener('change', () => {
-    if (mode === 4) {
-        lineWidth = thickness.value;
-        ctx2.lineWidth = thickness.value;
-    } else {
+    if (!snapping) {
         lineWidth = thickness.value;
         ctx.lineWidth = thickness.value;
+    } else {
+        lineWidth = thickness.value;
+        ctx2.lineWidth = thickness.value;
     }
 })
 thickness.addEventListener('mousedown', () => {
@@ -114,22 +122,40 @@ snapBtn.addEventListener("change", () => {
 
 let penBtn = document.querySelector(".pen")
 penBtn.addEventListener("click", () => {
-    mode = 0;
-    utensil = 0;
-    ctx.globalAlpha = 1;
-    console.log(utensil);
+    if (!snapping) {
+        mode = 0;
+        utensil = 0;
+        ctx.globalAlpha = 1;
+    } else {
+        mode = 4;
+        utensil = 0;
+        ctx2.globalAlpha = 1;
+    }
+
 })
 let pencilBtn = document.querySelector(".pencil")
 pencilBtn.addEventListener("click", () => {
-    mode = 0;
-    utensil = 2;
-    ctx.globalAlpha = .9;
+    if (!snapping) {
+        mode = 0;
+        utensil = 2;
+        ctx.globalAlpha = .9;
+    } else {
+        mode = 4;
+        utensil = 2;
+        ctx2.globalAlpha = .9;
+    }
 })
 let airbrushBtn = document.querySelector(".airbrush")
 airbrushBtn.addEventListener("click", () => {
-    utensil = 1;
-    mode = 0;
-    ctx.globalAlpha = 0.05;
+    if (!snapping) {
+        mode = 0;
+        utensil = 1;
+        ctx.globalAlpha = 0.05;
+    } else {
+        mode = 4;
+        utensil = 0;
+        ctx2.globalAlpha = 0.05;
+    }
 
 })
 
