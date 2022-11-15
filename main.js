@@ -285,6 +285,15 @@ window.addEventListener("mouseup", (e) => {
                 ctx.beginPath();
                 ctx.rect(minX, minY, (maxX-minX), (maxY-minY));
                 ctx.stroke();
+            } else if (result.Name === 'x') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(minX, minY);
+                ctx.lineTo(maxX, maxY);
+
+                ctx.moveTo(maxX, minY);
+                ctx.lineTo(minX, maxY);
+                ctx.stroke();
             }
 
         }
