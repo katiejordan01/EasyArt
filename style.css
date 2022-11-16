@@ -76,10 +76,7 @@
 .clr:nth-child(5){
     background-color: #fff;
 }
-#canvas {
-    height: 100%;
-    width:100%;
-}
+
 button{
     border: none;
     outline: none;
