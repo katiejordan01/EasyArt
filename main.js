@@ -65,10 +65,22 @@ clrs.forEach(clr => {
         if (!snapping) {
             ctx.strokeStyle = e.target.value;
             color = e.target.value;
+            ctx2.globalAlpha = 1;
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = color;
+            ctx2.lineWidth = lineWidth
+            ctx2.strokeStyle= color;
+            ctx2.setLineDash([]);
             mode = 0; 
         } else {
             ctx2.strokeStyle = e.target.value;
             color = e.target.value;
+            ctx2.globalAlpha = 1;
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = color;
+            ctx2.lineWidth = lineWidth
+            ctx2.strokeStyle= color;
+            ctx2.setLineDash([]);
             mode = 4;
         }
         
@@ -138,6 +150,7 @@ penBtn.addEventListener("click", () => {
         mode = 4;
         utensil = 0;
         ctx2.globalAlpha = 1;
+        ctx.globalAlpha = 1;
         ctx.strokeStyle = color;
         ctx2.lineWidth = lineWidth
         ctx2.strokeStyle= color;
@@ -155,6 +168,7 @@ pencilBtn.addEventListener("click", () => {
         mode = 4;
         utensil = 2;
         ctx2.globalAlpha = .9;
+        ctx.globalAlpha = .9;
         ctx.strokeStyle = color;
         ctx2.lineWidth = lineWidth
         ctx2.strokeStyle= color;
@@ -171,6 +185,7 @@ airbrushBtn.addEventListener("click", () => {
         mode = 4;
         utensil = 0;
         ctx2.globalAlpha = 0.05;
+        ctx.globalAlpha = 0.05;
         ctx.strokeStyle = color;
         ctx2.lineWidth = lineWidth
         ctx2.setLineDash([]);
@@ -266,6 +281,7 @@ window.addEventListener("mouseup", (e) => {
             const [r, g, b] = imgData.data;
             color = rgbToHex(r,g,b);
             ctx.strokeStyle = color;
+            ctx2.strokeStyle = color;
             clrs[0].value = color;
         }
         selectingColor = false;
@@ -454,9 +470,25 @@ document.addEventListener('keypress', (event) => {
     }
 })
 
-document.addEventListener('scroll', (event) => {
-    //thickness.value--;
-})
+var oldScrollY = window.scrollY;
+//var directionText = document.getElementById('direction');
+window.onscroll = function(e) {
+  if(oldScrollY < window.scrollY){
+        thickness.value--;
+        lineWidth = thickness.value;
+        ctx.lineWidth = lineWidth;
+        ctx2.lineWidth = lineWidth;
+  } else {
+      thickness.value++;
+      lineWidth = thickness.value;
+      ctx.lineWidth = lineWidth;
+      ctx2.lineWidth = lineWidth;
+  }
+  oldScrollY = window.scrollY;
+}
+// document.addEventListener('scroll', (event) => {
+//     //thickness.value--;
+// })
 
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
