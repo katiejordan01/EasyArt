@@ -190,8 +190,9 @@ function eraserMode() {
     document.body.style.cursor = "url(https://findicons.com/files/icons/1156/fugue/16/eraser.png), auto"; //setting a different icon from the internet
 }
 function strokeEraserMode() {
-    mode = 0;
     utensil = -1;
+    mode =0;
+    console.log("I'm using the stroke eraser now!");
     iconOffsetX = -10;
     iconOffsetY = -10;
     currentToolState = Tool.StrokeEraser;
@@ -235,7 +236,7 @@ window.addEventListener("mousedown", (e) => {
         // console.log(moved);
         moved = false;
         ctx2.clearRect(0,0,canvas2.width, canvas2.height);
-        if (!moved && currentToolState != Tool.Eraser && currentToolState != Tool.StrokeEraser) {
+        if (!moved && currentToolState != Tool.Eraser) {
             setTimeout(function() {
                 if (!moved) {
                     //fix bug
@@ -263,7 +264,13 @@ window.addEventListener("mousedown", (e) => {
                 console.log('clickx:', e.clientX - iconOffsetX, 'clicky:', e.clientY - iconOffsetY);
                 // console.log(window);
                 let nav = document.querySelector(".nav");
+                let side = document.querySelector(".side");
                 var leftNav, topNav, rightNav, bottomNav;
+                var rectSide = getOffset(side);
+                var leftSide = rectSide.left;
+                var rightSide = rectSide.right;
+                var topSide = rectSide.top;
+                var bottomSide = rectSide.bottom;
                 var rect = getOffset(nav);
                 leftNav = rect.left;
                 rightNav = rect.right;
@@ -276,7 +283,7 @@ window.addEventListener("mousedown", (e) => {
                     console.log("You're inside the nav!");
                 } else if (paintX > leftSide && paintX < rightSide && paintY < bottomSide && paintY > topSide) {
                     console.log("You're inside the side!");
-                } else if (e.clientX > leftSide && e.clientX < rightSide && e.clientY < bottomSide && clientY > topSide) {
+                } else if (e.clientX > leftSide && e.clientX < rightSide && e.clientY < bottomSide && e.clientY > topSide) {
                     console.log("you're reg mouse is inside the side");
                 } else {
                     floodFill(paintX,paintY, changeColor);
@@ -346,7 +353,7 @@ window.addEventListener("mouseup", (e) => {
         moved = true;
         clrDraw = true;
         draw = false
-        if (selectingColor && currentToolState != Tool.Eraser && currentToolState != Tool.StrokeEraser) {
+        if (selectingColor && currentToolState != Tool.Eraser) {
             const imgData = ctx2.getImageData(e.clientX - iconOffsetX, e.clientY - iconOffsetY, 1, 1);
             const [r, g, b] = imgData.data;
             console.log(r + g+ b);
