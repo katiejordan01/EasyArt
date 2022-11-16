@@ -232,10 +232,10 @@ window.addEventListener("mousedown", (e) => {
     if (mode === 0) {
         draw = true;
         down = true;
-        console.log(moved);
+        // console.log(moved);
         moved = false;
         ctx2.clearRect(0,0,canvas2.width, canvas2.height);
-        if (!moved && currentToolState != Tool.Eraser) {
+        if (!moved && currentToolState != Tool.Eraser && currentToolState != Tool.StrokeEraser) {
             setTimeout(function() {
                 if (!moved) {
                     //fix bug
@@ -282,6 +282,8 @@ window.addEventListener("mousedown", (e) => {
                     console.log("You're inside the nav!");
                 } else if (paintX > leftSide && paintX < rightSide && paintY < bottomSide && paintY > topSide) {
                     console.log("You're inside the side!");
+                } else if (e.clientX > leftSide && e.clientX < rightSide && e.clientY < bottomSide && clientY > topSide) {
+                    console.log("you're reg mouse is inside the side");
                 } else {
                     floodFill(paintX,paintY, changeColor);
                 }
@@ -308,7 +310,7 @@ window.addEventListener("mousedown", (e) => {
             }
         }
         
-        console.log(moved);
+        // console.log(moved);
     } else if (mode === 1) {
         if (currentToolState == Tool.Select) {
             isDragging = true;
@@ -350,7 +352,7 @@ window.addEventListener("mouseup", (e) => {
         moved = true;
         clrDraw = true;
         draw = false
-        if (selectingColor && currentToolState != Tool.Eraser) {
+        if (selectingColor && currentToolState != Tool.Eraser && currentToolState != Tool.StrokeEraser) {
             const imgData = ctx2.getImageData(e.clientX - iconOffsetX, e.clientY - iconOffsetY, 1, 1);
             const [r, g, b] = imgData.data;
             console.log(r + g+ b);
@@ -376,14 +378,15 @@ window.addEventListener("mouseup", (e) => {
             textYEnd = e.clientY - iconOffsetY;
             if (textXEnd != textXStart) {
                 console.log(textXStart, textXEnd);
-                textboxes.push(new CanvasInput({ //this is the class I used from the internet
-                    canvas: document.getElementById('canvas'),
-                    x: textXStart,
-                    y: textYStart,
-                    width: textXEnd - textXStart,
-                    height: textYEnd - textYStart,
-                    fontSize: textYEnd - textYStart,
-                }));
+                // textboxes.push(new CanvasInput({ //this is the class I used from the internet
+                //     canvas: document.getElementById('canvas'),
+                //     x: textXStart,
+                //     y: textYStart,
+                //     width: textXEnd - textXStart,
+                //     height: textYEnd - textYStart,
+                //     fontSize: textYEnd - textYStart,
+                // }));
+                textboxes.push(new OnCanvasTextBox(textXStart, textYStart, textXEnd - textXStart, textYEnd - textYStart));
             }
             // isDragging = false;
             // mouseX = e.clientX;
