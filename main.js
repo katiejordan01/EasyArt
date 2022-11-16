@@ -269,13 +269,7 @@ window.addEventListener("mousedown", (e) => {
                 rightNav = rect.right;
                 topNav = rect.top;
                 bottomNav = rect.bottom;
-                let side = document.querySelector(".side");
-                var sideRectangle = getOffset(side);
-                var leftSide = sideRectangle.left;
-                var rightSide = sideRectangle.right;
-                var bottomSide = sideRectangle.bottom;
-                var topSide = sideRectangle.top;
-                // console.log(leftNav, rightNav, topNav, bottomNav);
+                console.log(leftNav, rightNav, topNav, bottomNav);
                 let paintX = e.clientX - iconOffsetX;
                 let paintY = e.clientY - iconOffsetY;
                 if (paintX > leftNav && paintX < rightNav && paintY < bottomNav && paintY > topNav) {
