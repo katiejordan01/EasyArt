@@ -196,7 +196,8 @@ pencilBtn.addEventListener("click", () => {
         ctx.strokeStyle = color;
         ctx2.lineWidth = lineWidth
         ctx2.strokeStyle= color;
-}
+    }
+})
 let eraserBtn = document.querySelector(".eraser");
 eraserBtn.addEventListener("click", () => {
     mode = 0;
@@ -242,6 +243,7 @@ airbrushBtn.addEventListener("click", () => {
 let selectBtn = document.querySelector(".select")
 selectBtn.addEventListener("click", () => {
     mode = 1;
+    selectMode();
     //ctx2.fillStyle="transparent";
     ctx2.setLineDash([10,10])
     ctx2.strokeStyle="blue";
@@ -473,21 +475,6 @@ window.addEventListener("mouseup", (e) => {
             ctx2.strokeStyle = color;
             clrs[0].value = color;
         }
-    } else if (mode === 3) {
-        if (currentToolState == Tool.Text) { //I can use the states in my logic -> it makes things simpler
-            textXEnd = e.clientX - iconOffsetX;
-            textYEnd = e.clientY - iconOffsetY;
-            if (textXEnd != textXStart) {
-                console.log(textXStart, textXEnd);
-                // textboxes.push(new CanvasInput({ //this is the class I used from the internet
-                //     canvas: document.getElementById('canvas'),
-                //     x: textXStart,
-                //     y: textYStart,
-                //     width: textXEnd - textXStart,
-                //     height: textYEnd - textYStart,
-                //     fontSize: textYEnd - textYStart,
-                // }));
-                textboxes.push(new OnCanvasTextBox(textXStart, textYStart, textXEnd - textXStart, textYEnd - textYStart));
         selectingColor = false;
         if (points.length !== 0) {
             let result = dollar.Recognize(points, false);
@@ -571,7 +558,25 @@ window.addEventListener("mouseup", (e) => {
         maxY = 0;
         maxX = 0;
         points = []; 
-    }
+    } else if (mode === 3) {
+        if (currentToolState == Tool.Text) { //I can use the states in my logic -> it makes things simpler
+            textXEnd = e.clientX - iconOffsetX;
+            textYEnd = e.clientY - iconOffsetY;
+            if (textXEnd != textXStart) {
+                console.log(textXStart, textXEnd);
+                // textboxes.push(new CanvasInput({ //this is the class I used from the internet
+                //     canvas: document.getElementById('canvas'),
+                //     x: textXStart,
+                //     y: textYStart,
+                //     width: textXEnd - textXStart,
+                //     height: textYEnd - textYStart,
+                //     fontSize: textYEnd - textYStart,
+                // }));
+                textboxes.push(new OnCanvasTextBox(textXStart, textYStart, textXEnd - textXStart, textYEnd - textYStart));
+            }
+        }
+        
+}
 })
 
 window.addEventListener("mousemove", (e) => {
