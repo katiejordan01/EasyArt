@@ -1,26 +1,40 @@
-const canvas = document.getElementById("canvas")
+import {DollarRecognizer}from "./DollarRecognizer.js";
+
+const canvas = document.getElementById("canvas");
 const canvas2 = document.getElementById("CursorLayer");
 
+var dollar = new DollarRecognizer();
 
 canvas2.style.position = "absolute";
 var selectedWidth = 0;
 var selectedHeight = 0;
-const ctx = canvas.getContext("2d", {willReadFrequently: true});
+
 const ctx2 = canvas2.getContext("2d");
-canvas.height = window.innerHeight
-canvas.width = window.innerWidth
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
 canvas2.width = window.innerWidth;
 canvas2.height = window.innerHeight;
 const colorSelector = document.getElementById('stroke');
 let thickness = document.getElementById("thickness");
+
 var textboxes = [];
 var changeColor = "#000000";
 var paintColor;
 var currentPixel;
 
+
+var minY = Math.pow(10, 1000);
+var minX = Math.pow(10, 1000);
+var maxY = 0;
+var maxX = 0;
+
+var snapping = false;
+
 // canvas2.style.marginTop = "-" + canvas.height+ "px";
 canvas2.style.top = '0px'
 canvas2.style.left = '0px'
+
+const ctx = canvas.getContext("2d")
 
 let utensil = 0;
 let color = '#000000';
@@ -31,7 +45,7 @@ var mouseX, mouseY = 0;
 let iconOffsetX;
 let iconOffsetY;
 //holds state of which tool is being used
-let currentToolState = null;
+let currentToolState = 'pen';
 //an "enum" to hold all current and future tools that we use as states
 const Tool = {
     Eraser: 'Eraser',
@@ -43,6 +57,8 @@ const Tool = {
     PaintBucket: 'Paint Bucket',
     StrokeEraser: 'Stroke Eraser',
 }
+var points = [];
+
 
 let prevX = null
 let prevY = null
@@ -50,34 +66,66 @@ let selecting = false;
 let lineWidth = 10;
 
 ctx.lineWidth = lineWidth
+ctx2.lineWidth = lineWidth
 
 let selectingColor = false;
+
+let clrDraw;
 
 let draw = false;
 //used to check if mouse is down and moved or just down (click and hold functionality)
 let moved, down = false;
-// modes: 0-draw 1-select 2-recognition 3-text
+// modes: 0-draw 1-select 2-recognition
 let mode = 0;
-const selR= 0, selG = 0, selB = 0;
 
 let clrs = document.querySelectorAll(".stroke");
 clrs = Array.from(clrs);
 clrs.forEach(clr => {
     clr.addEventListener("click", (e) => {
-        ctx.strokeStyle = e.target.value;
-        changeColor = ctx.strokeStyle;
-        console.log('color changed:', e.target.value);
-        color = e.target.value;
+        if (!snapping) {
+            ctx.strokeStyle = e.target.value;
+            color = e.target.value;
+            ctx2.globalAlpha = 1;
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = color;
+            ctx2.lineWidth = lineWidth
+            ctx2.strokeStyle= color;
+            ctx2.setLineDash([]);
+            mode = 0; 
+        } else {
+            ctx2.strokeStyle = e.target.value;
+            color = e.target.value;
+            ctx2.globalAlpha = 1;
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = color;
+            ctx2.lineWidth = lineWidth
+            ctx2.strokeStyle= color;
+            ctx2.setLineDash([]);
+            mode = 4;
+        }
+        
     })
     clr.addEventListener('change', e => {
-        ctx.strokeStyle = e.target.value;
-        color = e.target.value;
+        if (!snapping) {
+            ctx.strokeStyle = e.target.value;
+            color = e.target.value;
+            mode = 0; 
+        } else {
+            ctx2.strokeStyle = e.target.value;
+            color = e.target.value;
+            mode = 4;
+        }
     })
 })
 
 thickness.addEventListener('change', () => {
-    lineWidth = thickness.value;
-    ctx.lineWidth = thickness.value;
+    if (!snapping) {
+        lineWidth = thickness.value;
+        ctx.lineWidth = thickness.value;
+    } else {
+        lineWidth = thickness.value;
+        ctx2.lineWidth = thickness.value;
+    }
 })
 thickness.addEventListener('mousedown', () => {
     selecting = true;
@@ -85,14 +133,6 @@ thickness.addEventListener('mousedown', () => {
 thickness.addEventListener('mouseup', () => {
     selecting = false;
 })
-// window.addEventListener('scroll', (e) => {
-//     if(e.deltaY > 1) {
-//         console.log(e.deltaY)
-//         thickness.value++;
-//       } else if (e.deltaY < -1) {
-//         thickness.value--;
-//       } 
-// })
 
 
 let clearBtn = document.querySelector(".clear")
@@ -100,18 +140,63 @@ clearBtn.addEventListener("click", () => {
     // Clearning the entire canvas
     ctx.clearRect(10, 0, canvas.width, canvas.height)
 })
+let snapBtn = document.querySelector(".switch")
+snapBtn.addEventListener("change", () => {
+    // Clearning the entire canvas
+    if (mode === 4) {
+        ctx.strokeStyle = color;
+        ctx2.lineWidth = lineWidth
+        ctx2.strokeStyle= color;
+        ctx2.setLineDash([]);
+        mode = 0;
+        snapping = false;
+    } else {
+        ctx.strokeStyle = color;
+        ctx2.lineWidth = lineWidth
+        ctx2.strokeStyle= color;
+        ctx2.setLineDash([]);
+        mode = 4;
+        snapping = true;
+    }
+})
 
 let penBtn = document.querySelector(".pen")
 penBtn.addEventListener("click", () => {
-    penMode();
+    if (!snapping) {
+        mode = 0;
+        penMode();
+        utensil = 0;
+        ctx.globalAlpha = 1;
+    } else {
+        mode = 4;
+        utensil = 0;
+        penMode();
+        ctx2.globalAlpha = 1;
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = color;
+        ctx2.lineWidth = lineWidth
+        ctx2.strokeStyle= color;
+        ctx2.setLineDash([]);
+    }
+
 })
 let pencilBtn = document.querySelector(".pencil")
 pencilBtn.addEventListener("click", () => {
-    mode = 0;
-    utensil = 2;
-    ctx.globalAlpha = .9;
-    pencilMode();
-})
+    if (!snapping) {
+        mode = 0;
+        pencilMode();
+        utensil = 2;
+        ctx.globalAlpha = .9;
+    } else {
+        mode = 4;
+        utensil = 2;
+        pencilMode();
+        ctx2.globalAlpha = .9;
+        ctx.globalAlpha = .9;
+        ctx.strokeStyle = color;
+        ctx2.lineWidth = lineWidth
+        ctx2.strokeStyle= color;
+}
 let eraserBtn = document.querySelector(".eraser");
 eraserBtn.addEventListener("click", () => {
     mode = 0;
@@ -132,20 +217,39 @@ let textBtn = document.querySelector(".text");
 textBtn.addEventListener("click", () => {
     textMode();
 })
+
 let airbrushBtn = document.querySelector(".airbrush")
 airbrushBtn.addEventListener("click", () => {
-    utensil = 1;
-    mode = 0;
-    ctx.globalAlpha = 0.05;
-    airbrushMode();
+    if (!snapping) {
+        mode = 0;
+        airbrushMode();
+        utensil = 1;
+        ctx.globalAlpha = 0.05;
+    } else {
+        mode = 4;
+        utensil = 0;
+        airbrushMode();
+        ctx2.globalAlpha = 0.05;
+        ctx.globalAlpha = 0.05;
+        ctx.strokeStyle = color;
+        ctx2.lineWidth = lineWidth
+        ctx2.strokeStyle= color;
+    }
+
+
 })
 
 let selectBtn = document.querySelector(".select")
 selectBtn.addEventListener("click", () => {
     mode = 1;
-    console.log(mode);
-    selectMode();
+    //ctx2.fillStyle="transparent";
+    ctx2.setLineDash([10,10])
+    ctx2.strokeStyle="blue";
+    ctx2.lineWidth=3;
+    ctx2.globalAlpha = 1;
+
 })
+
 function paintBucketMode() {
     console.log("I'm using the paint bucket now now!");
     currentToolState = Tool.PaintBucket; //sets the state to Paint Bucket
@@ -223,20 +327,15 @@ function selectMode() {
     iconOffsetY = 0;
 }
 
-//tracking the dimensions of the text box based on click and drag
-let textXStart = null;
-let textYStart = null;
-let textXEnd = null;
-let textYEnd = null;
+
 
 window.addEventListener("mousedown", (e) => {
-    if (mode === 0) {
+    if (mode === 0 || mode === 4) {
         draw = true;
         down = true;
-        // console.log(moved);
         moved = false;
         ctx2.clearRect(0,0,canvas2.width, canvas2.height);
-        if (!moved && currentToolState != Tool.Eraser) {
+        if (!moved) {
             setTimeout(function() {
                 if (!moved) {
                     //fix bug
@@ -255,7 +354,7 @@ window.addEventListener("mousedown", (e) => {
                     ctx2.fillStyle = gradient;
                     ctx2.borderRadius = '50%';
                     ctx2.fillRect(e.clientX-100, e.clientY-100, 200, 200, 200);
-                    // ctx2.fill();
+
 
                 }
             }, 1000);
@@ -312,29 +411,17 @@ window.addEventListener("mousedown", (e) => {
         }
         
         // console.log(moved);
+
     } else if (mode === 1) {
-        if (currentToolState == Tool.Select) {
-            isDragging = true;
-            ctx2.fillStyle="transparent";
-            ctx2.setLineDash([10,10]);
-            ctx2.strokeStyle="blue";
-            ctx2.lineWidth=3;
-            startX = e.clientX;
-            startY = e.clientY;
-        }
-    } else if (mode === 3) {
-        if (currentToolState == Tool.Text) {
-            textXStart = e.clientX - iconOffsetX;
-            textYStart = e.clientY - iconOffsetY;
-            // isDragging = true;
-            // ctx2.fillStyle="transparent";
-            // ctx2.setLineDash([10,10]);
-            // ctx2.strokeStyle="red";
-            // ctx2.lineWidth=3;
-            // startX = e.clientX;
-            // startY = e.clientY;
-        }
+        isDragging = true;
+        ctx2.fillStyle="transparent";
+        ctx2.setLineDash([10,10])
+        ctx2.strokeStyle="blue";
+        ctx2.lineWidth=3;
+        startX = e.clientX;
+        startY = e.clientY;
     }
+    
 })
 
 function getOffset(el) {
@@ -353,25 +440,38 @@ window.addEventListener("mouseup", (e) => {
         moved = true;
         clrDraw = true;
         draw = false
-        if (selectingColor && currentToolState != Tool.Eraser) {
-            const imgData = ctx2.getImageData(e.clientX - iconOffsetX, e.clientY - iconOffsetY, 1, 1);
+        if (selectingColor) {
+            const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
             const [r, g, b] = imgData.data;
-            console.log(r + g+ b);
             color = rgbToHex(r,g,b);
             ctx.strokeStyle = color;
             changeColor = color;
+            ctx2.strokeStyle = color;
             clrs[0].value = color;
-            console.log(rgbToHex(r,g,b))
         }
         selectingColor = false;
+        
         ctx2.clearRect(0,0,canvas2.width, canvas2.height)
+
     } else if (mode === 1) {
-        if (currentToolState == Tool.Select) {
-            isDragging = false;
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            ctx2.clearRect(0,0,canvas2.width, canvas2.height);
-            drawRectangle(mouseX, mouseY);
+        isDragging = false;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        ctx2.clearRect(0,0,canvas2.width, canvas2.height);
+        drawRectangle(mouseX, mouseY)
+    } else if (mode === 4) {
+        down = false;
+        moved = true;
+        clrDraw = true;
+        draw = false
+        if (selectingColor) {
+            const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
+            const [r, g, b] = imgData.data;
+            color = rgbToHex(r,g,b);
+            ctx.strokeStyle = color;
+            ctx2.strokeStyle = color;
+            clrs[0].value = color;
         }
     } else if (mode === 3) {
         if (currentToolState == Tool.Text) { //I can use the states in my logic -> it makes things simpler
@@ -388,13 +488,89 @@ window.addEventListener("mouseup", (e) => {
                 //     fontSize: textYEnd - textYStart,
                 // }));
                 textboxes.push(new OnCanvasTextBox(textXStart, textYStart, textXEnd - textXStart, textYEnd - textYStart));
+        selectingColor = false;
+        if (points.length !== 0) {
+            let result = dollar.Recognize(points, false);
+            console.log(result);
+            if (result.Name === 'triangle') {
+
+                //make it so that in shape recognition mode, it draws on ctx2 and then the shape pops up on the bottom ctx
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo((minX+maxX)/2, (minY));
+                ctx.lineTo(minX, maxY);
+                ctx.lineTo(maxX, maxY);
+                ctx.closePath();
+                ctx.stroke();
+            } else if (result.Name === 'circle') {
+                var centerX = (minX + maxX) / 2;
+                var centerY = (minY + maxY) / 2;
+                var radius = (((maxY-minY)/2)+((maxX-minX)/2))/2;
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2*Math.PI);
+                ctx.stroke();
+            } else if (result.Name === 'rectangle') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.rect(minX, minY, (maxX-minX), (maxY-minY));
+                ctx.stroke();
+            } else if (result.Name === 'x') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(minX, minY);
+                ctx.lineTo(maxX, maxY);
+
+                ctx.moveTo(maxX, minY);
+                ctx.lineTo(minX, maxY);
+                ctx.stroke();
+            } else if (result.Name === 'check') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(minX, (maxY+minY)/2);
+                ctx.lineTo((maxX+minX)/2, maxY);
+                ctx.lineTo(maxX, minY);
+                ctx.stroke();
+            } else if (result.Name === 'v') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(minX, minY);
+                ctx.lineTo((maxX+minX)/2, maxY);
+                ctx.lineTo(maxX, minY);
+                ctx.stroke();
+            } else if (result.Name === 'caret') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(minX, maxY);
+                ctx.lineTo((maxX+minX)/2, minY);
+                ctx.lineTo(maxX, maxY);
+                ctx.stroke();
+            } else if (result.Name === 'left square bracket') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(maxX, minY);
+                ctx.lineTo(minX, minY);
+                ctx.lineTo(minX, maxY);
+                ctx.lineTo(maxX, maxY);
+                ctx.stroke();
+            } else if (result.Name === 'right square bracket') {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(minX, minY);
+                ctx.lineTo(maxX, minY);
+                ctx.lineTo(maxX, maxY);
+                ctx.lineTo(minX, maxY);
+                ctx.stroke();
             }
-            // isDragging = false;
-            // mouseX = e.clientX;
-            // mouseY = e.clientY;
-            // ctx2.clearRect(0,0,canvas2.width, canvas2.height);
-            // drawRectangle(mouseX, mouseY);
+
         }
+        
+        ctx2.clearRect(0,0,canvas2.width, canvas2.height)
+        minY = Math.pow(10, 1000);
+        minX = Math.pow(10, 1000);
+        maxY = 0;
+        maxX = 0;
+        points = []; 
     }
 })
 
@@ -408,26 +584,22 @@ window.addEventListener("mousemove", (e) => {
                 return
             }
     
-            let currentX = e.clientX;
-            let currentY = e.clientY;
-            if (currentToolState == Tool.Pencil) {
-                ctx.lineCap = "butt";
-            } else if (currentToolState == Tool.Eraser) {
-                ctx.lineCap = "round";
-            }
-                
+            let currentX = e.clientX
+            let currentY = e.clientY
+    
             ctx.beginPath()
-            ctx.moveTo(prevX - iconOffsetX, prevY - iconOffsetY)
-            ctx.lineTo(currentX - iconOffsetX, currentY - iconOffsetY)
+            ctx.moveTo(prevX, prevY)
+            ctx.lineTo(currentX, currentY)
             if (utensil === 1) {
                 ctx.lineJoin = 'round';
                 ctx.miterLimit = 2;
-                ctx.arc(e.clientX - iconOffsetX, e.clientY - iconOffsetY,lineWidth/4, 0, Math.PI*2);
+                ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2);
             } else if (utensil === 0) {
-                // ctx.lineJoin = 'round';
-                // ctx.miterLimit = 2;
-                // ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
+                ctx.lineJoin = 'round';
+                ctx.miterLimit = 2;
+                ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
             }
+    
             ctx.stroke()
             
     
@@ -436,42 +608,60 @@ window.addEventListener("mousemove", (e) => {
             
         }
     } else if (mode === 1) {
-        if (currentToolState == Tool.Select) {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            if (!isDragging) {return;}
-            ctx2.clearRect(0,0,canvas2.width, canvas2.height);
-            drawRectangle(mouseX, mouseY);
-        }
-    } else if (mode === 3) {
-        if (currentToolState == Tool.Text) {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            // if (!isDragging) {return;}
-            // ctx2.clearRect(0,0,canvas2.width, canvas2.height);
-            // drawRectangle(mouseX + 10, mouseY + 10);
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (!isDragging) {return;}
+
+        ctx2.clearRect(0,0,canvas2.width, canvas2.height);
+        drawRectangle(mouseX, mouseY)
+        
+    } else if (mode === 4) {
+        moved = true;
+        if (!selecting && !selectingColor) {
+            if(prevX == null || prevY == null || !draw) {
+                prevX = e.clientX
+                prevY = e.clientY
+                return
+            }
+            if (e.clientX < minX) {
+                minX = e.clientX
+            }
+            if (e.clientX > maxX) {
+                maxX = e.clientX
+            }
+            if (e.clientY < minY) {
+                minY = e.clientY
+            }
+            if (e.clientY > maxY) {
+                maxY = e.clientY
+            } 
+            var point = {X: e.clientX, Y: e.clientY};
+            points.push(point);
+    
+            let currentX = e.clientX
+            let currentY = e.clientY
+    
+            ctx2.beginPath()
+            ctx2.moveTo(prevX, prevY)
+            ctx2.lineTo(currentX, currentY)
+            if (utensil === 1) {
+                ctx2.lineJoin = 'round';
+                ctx2.miterLimit = 2;
+                ctx2.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2);
+            } else if (utensil === 0) {
+                ctx2.lineJoin = 'round';
+                ctx2.miterLimit = 2;
+                ctx2.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
+            }
+    
+            ctx2.stroke()
+            
+    
+            prevX = currentX
+            prevY = currentY
         }
     }
 })
-window.addEventListener("contextmenu", (e) => { //this is the right click to pull up a default sized text box wherever you right click
-    e.preventDefault();
-    let rightClickTextX = e.clientX;
-    let rightClickTextY = e.clientY;
-    console.log(rightClickTextX, rightClickTextY);
-    textboxes.push(new CanvasInput({
-        canvas: document.getElementById('canvas'),
-        x: rightClickTextX,
-        y: rightClickTextY,
-    }));
-}); 
-window.addEventListener("dblclick", (e) => { //double clicking changes a pen to an eraser and vice-versa using states
-    //TODO: this logic is weird when text boxes are on the page; after switching, I can't click and drag
-    if (currentToolState == Tool.Pen) {
-        eraserMode()
-    } else if (currentToolState == Tool.Eraser) {
-        penMode()
-    }
-});
 document.addEventListener('keypress', (event) => {
     var name = event.key;
     if (name === "q") {
@@ -487,10 +677,25 @@ document.addEventListener('keypress', (event) => {
     }
 })
 
-document.addEventListener('scroll', (event) => {
-    console.log(event.deltaY);
-    thickness.value--;
-})
+var oldScrollY = window.scrollY;
+//var directionText = document.getElementById('direction');
+window.onscroll = function(e) {
+  if(oldScrollY < window.scrollY){
+        thickness.value--;
+        lineWidth = thickness.value;
+        ctx.lineWidth = lineWidth;
+        ctx2.lineWidth = lineWidth;
+  } else {
+      thickness.value++;
+      lineWidth = thickness.value;
+      ctx.lineWidth = lineWidth;
+      ctx2.lineWidth = lineWidth;
+  }
+  oldScrollY = window.scrollY;
+}
+// document.addEventListener('scroll', (event) => {
+//     //thickness.value--;
+// })
 
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -520,6 +725,7 @@ function drawRectangle(mouseX,mouseY){
     ctx2.rect(startX,startY,selectedWidth,selectedHeight);
     ctx2.fill();
     ctx2.stroke();
+
 }
 
 function getCurrentPixelColor(sr, sc) {
@@ -650,3 +856,4 @@ function checkBoundary (x,y,newCurrent, current) {
 //         fill(sr, sc+1, newColor, current);
 //     }    
 // }
+

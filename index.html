@@ -13,7 +13,7 @@
     <div class="title">
         <h1>EasyArt</h1>
     </div>
-    <div class="side">
+    <div class="right-side">
         <button class="pen">Pen</button>
         <button class="pencil">Pencil</button>
         <button class='airbrush'>Airbrush</button>
@@ -27,6 +27,13 @@
         <Label for="thickness">Thickness</Label>
 
     </div>
+    <div class="left-side">
+        <p>Shape Snapping</p>
+        <label class="switch">
+            <input type="checkbox" >
+            <span class="slider round"></span>
+          </label>
+    </div>
     <div class="nav">
         <!-- We will be accessing the data-clr in JavaScript -->
         <input class="stroke" name='stroke' type="color" >
@@ -36,12 +43,13 @@
         <input class="stroke" name='stroke' type="color" value="#9932CC">
     </div>
 
-    <script src="main.js"></script>
+    <script type="module" src="main.js"></script>
     <script src="CanvasInput.js"></script>
     <!-- <script src="OnCanvasTextBox.js"></script> -->
     <!-- <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script> -->
     <!-- <script language="JavaScript" type="text/javascript" src="assets/jquery-1.2.6.min.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/sprinkle.js"></script> -->
+
 </body>
 </html>
