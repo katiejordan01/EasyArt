@@ -744,7 +744,7 @@ function drawRectangle(mouseX,mouseY){
     ctx2.stroke();
 
 }
-
+//code to switch between tools on interaction
 window.addEventListener("dblclick", () => {
     if (currentToolState == Tool.Eraser) {
         if (!snapping) {
