@@ -745,10 +745,32 @@ function drawRectangle(mouseX,mouseY){
 
 }
 
+window.addEventListener("dblclick", () => {
+    if (currentToolState == Tool.Eraser) {
+        if (!snapping) {
+            mode = 0;
+            penMode();
+            utensil = 0;
+            ctx.globalAlpha = 1;
+        } else {
+            mode = 4;
+            utensil = 0;
+            penMode();
+            ctx2.globalAlpha = 1;
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = color;
+            ctx2.lineWidth = lineWidth
+            ctx2.strokeStyle= color;
+            ctx2.setLineDash([]);
+        }
+    } else if (currentToolState == Tool.Pen || currentToolState == Tool.Pencil) {
+        mode = 0;
+        utensil = 0;
+        eraserMode();
+    }
+});
+
 function getCurrentPixelColor(sr, sc) {
-    // const currentPixel = ctx.getImageData(e.clientX - iconOffsetX, e.clientY - iconOffsetY, 1, 1);
-    // const pixelData = currentPixel.data;
-    // const [r,g,b] = pixelData;
     currentPixel = ctx.getImageData(sr, sc, 1, 1);
     const pixelData = currentPixel.data;
     const [r,g,b,a] = pixelData;
