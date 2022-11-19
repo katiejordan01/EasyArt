@@ -34,7 +34,7 @@ var snapping = false;
 canvas2.style.top = '0px'
 canvas2.style.left = '0px'
 
-const ctx = canvas.getContext("2d")
+const ctx = canvas.getContext("2d", { willReadFrequently: true })
 
 let utensil = 0;
 let color = '#000000';
@@ -85,6 +85,7 @@ clrs.forEach(clr => {
         if (!snapping) {
             ctx.strokeStyle = e.target.value;
             color = e.target.value;
+            changeColor = e.target.value;
             ctx2.globalAlpha = 1;
             ctx.globalAlpha = 1;
             ctx.strokeStyle = color;
@@ -94,6 +95,7 @@ clrs.forEach(clr => {
             mode = 0; 
         } else {
             ctx2.strokeStyle = e.target.value;
+            changeColor = e.target.value;
             color = e.target.value;
             ctx2.globalAlpha = 1;
             ctx.globalAlpha = 1;
@@ -109,10 +111,12 @@ clrs.forEach(clr => {
         if (!snapping) {
             ctx.strokeStyle = e.target.value;
             color = e.target.value;
+            changeColor = e.target.value;
             mode = 0; 
         } else {
             ctx2.strokeStyle = e.target.value;
             color = e.target.value;
+            changeColor = e.target.value;
             mode = 4;
         }
     })
@@ -263,8 +267,8 @@ function paintBucketMode() {
     document.body.style.cursor = "url(https://findicons.com/files/icons/2332/super_mono/64/paint_bucket.png), auto";
 }
 function penMode() {
-    mode = 0;
-    utensil = 0;
+    // mode = 0;
+    // utensil = 0;
     ctx.globalAlpha = 1;
     console.log(utensil);
     console.log("I'm using the pen now!") //sets the state to Pen
@@ -297,7 +301,7 @@ function eraserMode() {
 }
 function strokeEraserMode() {
     utensil = -1;
-    mode =0;
+    mode = 0;
     console.log("I'm using the stroke eraser now!");
     iconOffsetX = -10;
     iconOffsetY = -10;
@@ -306,14 +310,14 @@ function strokeEraserMode() {
     ctx.globalAlpha = 1;
     document.body.style.cursor = "url(https://findicons.com/files/icons/1620/crystal_project/22/cancel.png), auto";
 }
-function textMode() { // the text tool, I'm using someone's text box from this website: https://goldfirestudios.com/canvasinput-html5-canvas-text-input
-    mode = 3;
-    console.log("I'm using the text tool now!");
-    document.body.style.cursor = "text"; //setting the icon to change
-    currentToolState = Tool.Text;
-    iconOffsetX = 0;
-    iconOffsetY = 0;
-}
+// function textMode() { // the text tool, I'm using someone's text box from this website: https://goldfirestudios.com/canvasinput-html5-canvas-text-input
+//     mode = 3;
+//     console.log("I'm using the text tool now!");
+//     document.body.style.cursor = "text"; //setting the icon to change
+//     currentToolState = Tool.Text;
+//     iconOffsetX = 0;
+//     iconOffsetY = 0;
+// }
 function airbrushMode() {
     console.log("I'm using the airbrush tool now!");
     iconOffsetX = -2;
@@ -365,7 +369,7 @@ window.addEventListener("mousedown", (e) => {
                 console.log('clickx:', e.clientX - iconOffsetX, 'clicky:', e.clientY - iconOffsetY);
                 // console.log(window);
                 let nav = document.querySelector(".nav");
-                let side = document.querySelector(".side");
+                let side = document.querySelector(".right-side");
                 var leftNav, topNav, rightNav, bottomNav;
                 var rectSide = getOffset(side);
                 var leftSide = rectSide.left;
@@ -380,12 +384,15 @@ window.addEventListener("mousedown", (e) => {
                 console.log(leftNav, rightNav, topNav, bottomNav);
                 let paintX = e.clientX - iconOffsetX;
                 let paintY = e.clientY - iconOffsetY;
+                var beforePaintColor = getCurrentPixelColorPaintEdition(paintX, paintY);
                 if (paintX > leftNav && paintX < rightNav && paintY < bottomNav && paintY > topNav) {
                     console.log("You're inside the nav!");
                 } else if (paintX > leftSide && paintX < rightSide && paintY < bottomSide && paintY > topSide) {
                     console.log("You're inside the side!");
                 } else if (e.clientX > leftSide && e.clientX < rightSide && e.clientY < bottomSide && e.clientY > topSide) {
                     console.log("you're reg mouse is inside the side");
+                } else if (changeColor == beforePaintColor) {
+                    console.log("it's already the color that you want it to be!")
                 } else {
                     floodFill(paintX,paintY, changeColor);
                 }
@@ -446,6 +453,7 @@ window.addEventListener("mouseup", (e) => {
             const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
             const [r, g, b] = imgData.data;
             color = rgbToHex(r,g,b);
+            changeColor = color;
             ctx.strokeStyle = color;
             changeColor = color;
             ctx2.strokeStyle = color;
@@ -471,6 +479,7 @@ window.addEventListener("mouseup", (e) => {
             const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
             const [r, g, b] = imgData.data;
             color = rgbToHex(r,g,b);
+            changeColor = color;
             ctx.strokeStyle = color;
             ctx2.strokeStyle = color;
             clrs[0].value = color;
@@ -713,13 +722,17 @@ function hexToRgb(hex) {
 function rgbToHex(r, g, b) {
     return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
 }
+function rgbToHexPaintEdition(r, g, b,a) {
+    if (r==0 && b==0 && g==0 && a>0) return "#000000";
+    return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
+}
 
 function rgbaToHex(r,g,b,a) {
-    hex =
-    (r | 1 << 8).toString(16).slice(1) +
+    const hex = (r | 1 << 8).toString(16).slice(1) +
     (g | 1 << 8).toString(16).slice(1) +
     (b | 1 << 8).toString(16).slice(1) +
     (a | 1 << 8).toString(16).slice(1);
+    
     return hex;
 }
 
@@ -750,6 +763,20 @@ function getCurrentPixelColor(sr, sc) {
     // console.log(sr,sc,current);
     return currentColor;
 }
+function getCurrentPixelColorPaintEdition(sr,sc) {
+    currentPixel = ctx.getImageData(sr, sc, 1, 1);
+    const pixelData = currentPixel.data;
+    const [r,g,b,a] = pixelData;
+    var currentColor;
+    if (a == 0) {
+        currentColor = "ffffffff";
+    } else {
+        currentColor = rgbToHexPaintEdition(r,g,b,a);
+    }
+    
+    // console.log(sr,sc,current);
+    return currentColor;
+}
 function setCurrentPixelColor(sr,sc,newColor) { 
     var r,g,b,d1, d2;
     var myColor;
@@ -765,7 +792,7 @@ function setCurrentPixelColor(sr,sc,newColor) {
     ctx.putImageData(currentPixel, sr, sc);
 }
 
-pixelsToFill = [];
+// pixelsToFill = [];
 var searchDirections = [[1,0],[-1,0],[0,1],[0,-1]];
 const floodFill = (sr, sc, newColor) => {
     // //Get the input which needs to be replaced.
