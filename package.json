@@ -1,0 +1,14 @@
+{
+    "name": "Easy Art Server",
+    "version": "1.0.0",
+    "description": "testing easy art.",
+    "scripts": {
+      "lite": "lite-server --port 10001",
+      "start": "npm run lite"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "lite-server": "^1.3.1"
+    }
+ }
