@@ -9,7 +9,7 @@ canvas2.style.position = "absolute";
 var selectedWidth = 0;
 var selectedHeight = 0;
 
-const ctx2 = canvas2.getContext("2d");
+const ctx2 = canvas2.getContext("2d", { willReadFrequently: true });
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 canvas2.width = window.innerWidth;
@@ -310,8 +310,7 @@ function strokeEraserMode() {
     ctx.globalAlpha = 1;
     document.body.style.cursor = "url(https://findicons.com/files/icons/1620/crystal_project/22/cancel.png), auto";
 }
-// function textMode() { // the text tool, I'm using someone's text box from this website: https://goldfirestudios.com/canvasinput-html5-canvas-text-input
-//     mode = 3;
+// function textMode() { // the text tool, I'm using someone's text box from this website: 
 //     console.log("I'm using the text tool now!");
 //     document.body.style.cursor = "text"; //setting the icon to change
 //     currentToolState = Tool.Text;
@@ -792,21 +791,12 @@ function setCurrentPixelColor(sr,sc,newColor) {
     ctx.putImageData(currentPixel, sr, sc);
 }
 
-// pixelsToFill = [];
 var searchDirections = [[1,0],[-1,0],[0,1],[0,-1]];
 const floodFill = (sr, sc, newColor) => {
     // //Get the input which needs to be replaced.
     const current = getCurrentPixelColor(sr,sc);
-    // //If the newColor is same as the existing pixel, then do nothing
-    // if(current === newColor){
-    //     return;
-    // }
-    // //Otherwise fill the pixel
-    // fill(sr, sc, newColor, current);
-    // return;
     let stack = [];
     stack.push({x:sr,y:sc});
-    // pixelsToFill.push({x:sr,y:sc});
     while (stack.length > 0) {
         let currentPixel = stack.pop();
         for (var i = 0; i < searchDirections.length; i++) {
@@ -820,72 +810,9 @@ const floodFill = (sr, sc, newColor) => {
             }
         }
     }
-    // console.log("Done putting pixels to color on the stack!");
-    // while (pixelsToFill.length > 0) {
-    //     var currentPixel = pixelsToFill.pop();
-    //     setCurrentPixelColor(currentPixel.x, currentPixel.y, newColor);
-    // }
-    // console.log("Done!");
 };
 
 function checkBoundary (x,y,newCurrent, current) {
     return x >=0 && y >= 0 && x < canvas.width && y < canvas.height && newCurrent == current;
 }
-
-// const fill = (sr, sc, newColor, current) => {
-//     //If row is less than 0
-//     if(sr < 0){
-//         return;
-//     }
-
-//     //If column is less than 0
-//     if(sc < 0){
-//         return;
-//     }
-
-//     //If row is greater than image length
-//     if(sr > canvas.width){
-//         return;
-//     }
-
-//     //If column is greater than image length
-//     if(sc > canvas.height){
-//         return;
-//     }
-
-//     //If the current pixel is not which needs to be replaced //TODO: query color //prev:image[sr][sc]
-//     var newCurrent = getCurrentPixelColor(sr,sc);
-//     // console.log(newCurrent);
-//     if(newCurrent != current){
-//         return;
-//     }
-    
-//     //Update the new color //TODO: set color//  image[sr][sc] = newColor;
-//     setCurrentPixelColor(sr,sc,newColor);
-//     // console.log("I set the color of a pixel!");
-
-//     //Fill in all four directions
-//     //Fill Prev row
-//     var leftColor = getCurrentPixelColor(sr-1, sc);
-//     if (leftColor == current) {
-//         fill(sr - 1, sc, newColor, current);
-//     } else {
-//         // console.log(leftColor, current);
-//     }
-
-//     //Fill Next row
-//     if (getCurrentPixelColor(sr+1, sc) == current) {
-//         fill(sr + 1, sc, newColor, current);
-//     }
-
-//     //Fill Prev col
-//     if (getCurrentPixelColor(sr, sc-1) == current) {
-//         fill(sr, sc-1, newColor, current);
-//     }
-
-//     //Fill next col
-//     if (getCurrentPixelColor(sr, sc+1) == current) {
-//         fill(sr, sc+1, newColor, current);
-//     }    
-// }
 
