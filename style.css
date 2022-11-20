@@ -84,6 +84,9 @@ button{
     border-radius: 3px;
     background-color: #03bb56;
     color: #fff;
+    margin: 5px;
+    height: 6%;
+    width: 95%;
 }
 .pen {
   border: 2px solid #ff0000;
