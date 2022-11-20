@@ -838,3 +838,106 @@ function checkBoundary (x,y,newCurrent, current) {
     return x >=0 && y >= 0 && x < canvas.width && y < canvas.height && newCurrent == current;
 }
 
+
+var throttle = false;
+window.addEventListener('click', function (e) {    
+    if (!throttle && e.detail === 3) {
+        console.log('Triple-clicked!');
+        throttle = true;
+
+        console.log('clickx:', e.clientX - iconOffsetX, 'clicky:', e.clientY - iconOffsetY);
+                // console.log(window);
+                let nav = document.querySelector(".nav");
+                let side = document.querySelector(".right-side");
+                var leftNav, topNav, rightNav, bottomNav;
+                var rectSide = getOffset(side);
+                var leftSide = rectSide.left;
+                var rightSide = rectSide.right;
+                var topSide = rectSide.top;
+                var bottomSide = rectSide.bottom;
+                var rect = getOffset(nav);
+                leftNav = rect.left;
+                rightNav = rect.right;
+                topNav = rect.top;
+                bottomNav = rect.bottom;
+                console.log(leftNav, rightNav, topNav, bottomNav);
+                let paintX = e.clientX - iconOffsetX;
+                let paintY = e.clientY - iconOffsetY;
+                var beforePaintColor = getCurrentPixelColorPaintEdition(paintX, paintY);
+                if (paintX > leftNav && paintX < rightNav && paintY < bottomNav && paintY > topNav) {
+                    console.log("You're inside the nav!");
+                } else if (paintX > leftSide && paintX < rightSide && paintY < bottomSide && paintY > topSide) {
+                    console.log("You're inside the side!");
+                } else if (e.clientX > leftSide && e.clientX < rightSide && e.clientY < bottomSide && e.clientY > topSide) {
+                    console.log("you're reg mouse is inside the side");
+                } else if (changeColor == beforePaintColor) {
+                    console.log("it's already the color that you want it to be!")
+                } else {
+                    floodFill(paintX,paintY, changeColor);
+                }
+
+
+
+        setTimeout(function () {    
+            throttle = false;
+        }, 1000);
+    }
+});
+
+// const fill = (sr, sc, newColor, current) => {
+//     //If row is less than 0
+//     if(sr < 0){
+//         return;
+//     }
+
+//     //If column is less than 0
+//     if(sc < 0){
+//         return;
+//     }
+
+//     //If row is greater than image length
+//     if(sr > canvas.width){
+//         return;
+//     }
+
+//     //If column is greater than image length
+//     if(sc > canvas.height){
+//         return;
+//     }
+
+//     //If the current pixel is not which needs to be replaced //TODO: query color //prev:image[sr][sc]
+//     var newCurrent = getCurrentPixelColor(sr,sc);
+//     // console.log(newCurrent);
+//     if(newCurrent != current){
+//         return;
+//     }
+    
+//     //Update the new color //TODO: set color//  image[sr][sc] = newColor;
+//     setCurrentPixelColor(sr,sc,newColor);
+//     // console.log("I set the color of a pixel!");
+
+//     //Fill in all four directions
+//     //Fill Prev row
+//     var leftColor = getCurrentPixelColor(sr-1, sc);
+//     if (leftColor == current) {
+//         fill(sr - 1, sc, newColor, current);
+//     } else {
+//         // console.log(leftColor, current);
+//     }
+
+//     //Fill Next row
+//     if (getCurrentPixelColor(sr+1, sc) == current) {
+//         fill(sr + 1, sc, newColor, current);
+//     }
+
+//     //Fill Prev col
+//     if (getCurrentPixelColor(sr, sc-1) == current) {
+//         fill(sr, sc-1, newColor, current);
+//     }
+
+//     //Fill next col
+//     if (getCurrentPixelColor(sr, sc+1) == current) {
+//         fill(sr, sc+1, newColor, current);
+//     }    
+// }
+
