@@ -85,6 +85,113 @@ button{
     background-color: #03bb56;
     color: #fff;
 }
+.pen {
+  border: 2px solid #ff0000;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.pen:hover {
+  border: 2px solid #ff0000;
+  background-color: #ff0000;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.pencil {
+  border: 2px solid #ff9900;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.pencil:hover {
+  border: 2px solid #ff9900;
+  background-color: #ff9900;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.airbrush {
+  border: 2px solid #ffea00;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.airbrush:hover {
+  border: 2px solid #ffea00;
+  background-color: #ffea00;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.text {
+  border: 2px solid #22bd03;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.text:hover {
+  border: 2px solid #22bd03;
+  background-color: #22bd03;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.paintBucket {
+  border: 2px solid #1b7cfa;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.paintBucket:hover {
+  border: 2px solid #1b7cfa;
+  background-color: #1b7cfa;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.eraser {
+  border: 2px solid #802cbc;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.eraser:hover {
+  border: 2px solid #802cbc;
+  background-color: #802cbc;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.stroke-eraser {
+  border: 2px solid #9400D3;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.stroke-eraser:hover {
+  border: 2px solid #9400D3;
+  background-color: #9400D3;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.select {
+  border: 2px dashed blue;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.select:hover {
+  border: 2px dashed blue;
+  background-color: rgb(67, 108, 255);
+  color: rgb(0, 0, 0);
+  font-family: Monaco;
+}
+.clear {
+  border: 2px solid black;
+  background-color: black;
+  font-family: Monaco;
+}
+.clear:hover{
+  border: 2px solid black;
+  background-color: white;
+  color: black;
+  font-family: Monaco;
+}
 .save{
     background-color: #0f65d4;
 }
