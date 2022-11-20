@@ -15,7 +15,7 @@ canvas.width = window.innerWidth;
 canvas2.width = window.innerWidth;
 canvas2.height = window.innerHeight;
 const colorSelector = document.getElementById('stroke');
-let thickness = document.getElementById("thickness");
+// let thickness = document.getElementById("thickness");
 
 var textboxes = [];
 var changeColor = "#000000";
@@ -122,6 +122,7 @@ clrs.forEach(clr => {
     })
 })
 
+let thickness = document.querySelector(".thickness")
 thickness.addEventListener('change', () => {
     if (!snapping) {
         lineWidth = thickness.value;
