@@ -9,7 +9,7 @@ canvas2.style.position = "absolute";
 var selectedWidth = 0;
 var selectedHeight = 0;
 
-const ctx2 = canvas2.getContext("2d");
+const ctx2 = canvas2.getContext("2d", { willReadFrequently: true });
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 canvas2.width = window.innerWidth;
@@ -310,8 +310,7 @@ function strokeEraserMode() {
     ctx.globalAlpha = 1;
     document.body.style.cursor = "url(https://findicons.com/files/icons/1620/crystal_project/22/cancel.png), auto";
 }
-// function textMode() { // the text tool, I'm using someone's text box from this website: https://goldfirestudios.com/canvasinput-html5-canvas-text-input
-//     mode = 3;
+// function textMode() { // the text tool, I'm using someone's text box from this website: 
 //     console.log("I'm using the text tool now!");
 //     document.body.style.cursor = "text"; //setting the icon to change
 //     currentToolState = Tool.Text;
@@ -745,11 +744,33 @@ function drawRectangle(mouseX,mouseY){
     ctx2.stroke();
 
 }
+//code to switch between tools on interaction
+window.addEventListener("dblclick", () => {
+    if (currentToolState == Tool.Eraser) {
+        if (!snapping) {
+            mode = 0;
+            penMode();
+            utensil = 0;
+            ctx.globalAlpha = 1;
+        } else {
+            mode = 4;
+            utensil = 0;
+            penMode();
+            ctx2.globalAlpha = 1;
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = color;
+            ctx2.lineWidth = lineWidth
+            ctx2.strokeStyle= color;
+            ctx2.setLineDash([]);
+        }
+    } else if (currentToolState == Tool.Pen || currentToolState == Tool.Pencil) {
+        mode = 0;
+        utensil = 0;
+        eraserMode();
+    }
+});
 
 function getCurrentPixelColor(sr, sc) {
-    // const currentPixel = ctx.getImageData(e.clientX - iconOffsetX, e.clientY - iconOffsetY, 1, 1);
-    // const pixelData = currentPixel.data;
-    // const [r,g,b] = pixelData;
     currentPixel = ctx.getImageData(sr, sc, 1, 1);
     const pixelData = currentPixel.data;
     const [r,g,b,a] = pixelData;
@@ -792,21 +813,12 @@ function setCurrentPixelColor(sr,sc,newColor) {
     ctx.putImageData(currentPixel, sr, sc);
 }
 
-// pixelsToFill = [];
 var searchDirections = [[1,0],[-1,0],[0,1],[0,-1]];
 const floodFill = (sr, sc, newColor) => {
     // //Get the input which needs to be replaced.
     const current = getCurrentPixelColor(sr,sc);
-    // //If the newColor is same as the existing pixel, then do nothing
-    // if(current === newColor){
-    //     return;
-    // }
-    // //Otherwise fill the pixel
-    // fill(sr, sc, newColor, current);
-    // return;
     let stack = [];
     stack.push({x:sr,y:sc});
-    // pixelsToFill.push({x:sr,y:sc});
     while (stack.length > 0) {
         let currentPixel = stack.pop();
         for (var i = 0; i < searchDirections.length; i++) {
@@ -820,17 +832,12 @@ const floodFill = (sr, sc, newColor) => {
             }
         }
     }
-    // console.log("Done putting pixels to color on the stack!");
-    // while (pixelsToFill.length > 0) {
-    //     var currentPixel = pixelsToFill.pop();
-    //     setCurrentPixelColor(currentPixel.x, currentPixel.y, newColor);
-    // }
-    // console.log("Done!");
 };
 
 function checkBoundary (x,y,newCurrent, current) {
     return x >=0 && y >= 0 && x < canvas.width && y < canvas.height && newCurrent == current;
 }
+
 
 var throttle = false;
 window.addEventListener('click', function (e) {    
