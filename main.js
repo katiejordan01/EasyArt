@@ -17,6 +17,10 @@ canvas2.height = window.innerHeight;
 const colorSelector = document.getElementById('stroke');
 let thickness = document.getElementById('thickness');
 
+let thinBtn = document.getElementById('huey');
+let medBtn = document.getElementById('dewey');
+let thickBtn = document.getElementById('louie');
+
 
 var textboxes = [];
 var changeColor = "#000000";
@@ -133,7 +137,6 @@ radio.forEach(btn => {
         ctx.lineWidth = lineWidth
     })
 }
-
 )
 
 
@@ -762,6 +765,21 @@ document.addEventListener('keypress', (event) => {
         eraserMode();
     } else if (name === "s") {
         strokeEraserMode();
+    } else if (name === "z") {
+        lineWidth = 5;
+        ctx.lineWidth = lineWidth;
+        ctx2.lineWidth = lineWidth;
+        thinBtn.checked = true;
+    } else if (name === "x") {
+        lineWidth = 10;
+        ctx.lineWidth = lineWidth;
+        ctx2.lineWidth = lineWidth;
+        medBtn.checked = true;
+    } else if (name === "c") {
+        lineWidth = 15;
+        ctx.lineWidth = lineWidth;
+        ctx2.lineWidth = lineWidth;
+        thickBtn.checked = true;
     }
 })
 

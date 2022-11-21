@@ -85,7 +85,7 @@ button{
     background-color: #03bb56;
     color: #fff;
     margin: 5px;
-    height: 6%;
+    height: fit-content;
     width: 95%;
 }
 button:hover .utensiltooltip {
@@ -226,7 +226,7 @@ p{
 
 }
 #thickness {
-    height: 10%;
+    height: fit-content;
 }
 .switch {
     position: relative;
@@ -289,11 +289,25 @@ p{
   }
 
   fieldset {
-    width: 80%;
+    width:fit-content;
     text-align: center;
     font-family: Monaco;
   }
   .radiobuttons {
     margin: 10px;
     text-align: left;
+  }
+  .radiobuttons:hover .utensiltooltip2{
+    margin: 10px;
+    text-align: left;
+    display: block;
+  }
+  .utensiltooltip2{
+    display: none;
+    /* NEW */
+    background: #dfdcdc37;
+    position: fixed;
+    z-index: 1000;
+    width: 20px;
+    height: 10px;
   }
