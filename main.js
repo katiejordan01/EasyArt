@@ -15,7 +15,12 @@ canvas.width = window.innerWidth;
 canvas2.width = window.innerWidth;
 canvas2.height = window.innerHeight;
 const colorSelector = document.getElementById('stroke');
-let thickness = document.getElementById("thickness");
+let thickness = document.getElementById('thickness');
+
+let thinBtn = document.getElementById('huey');
+let medBtn = document.getElementById('dewey');
+let thickBtn = document.getElementById('louie');
+
 
 var textboxes = [];
 var changeColor = "#000000";
@@ -78,6 +83,7 @@ let moved, down = false;
 // modes: 0-draw 1-select 2-recognition
 let mode = 0;
 
+
 let clrs = document.querySelectorAll(".stroke");
 clrs = Array.from(clrs);
 clrs.forEach(clr => {
@@ -122,21 +128,35 @@ clrs.forEach(clr => {
     })
 })
 
-thickness.addEventListener('change', () => {
-    if (!snapping) {
-        lineWidth = thickness.value;
-        ctx.lineWidth = thickness.value;
-    } else {
-        lineWidth = thickness.value;
-        ctx2.lineWidth = thickness.value;
-    }
-})
-thickness.addEventListener('mousedown', () => {
-    selecting = true;
-})
-thickness.addEventListener('mouseup', () => {
-    selecting = false;
-})
+let radio = document.querySelectorAll(".radiobuttons");
+radio = Array.from(radio);
+radio.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        lineWidth = e.target.value;
+        ctx2.lineWidth = lineWidth
+        ctx.lineWidth = lineWidth
+    })
+}
+)
+
+
+// // let thickness = document.querySelector(".thickness")
+// thickness.addEventListener('change', () => {
+//     if (!snapping) {
+//         lineWidth = thickness.value;
+//         ctx.lineWidth = thickness.value;
+//     } else {
+//         lineWidth = thickness.value;
+//         ctx2.lineWidth = thickness.value;
+//     }
+// })
+// thickness.addEventListener('mousedown', () => {
+//     selecting = true;
+// })
+// thickness.addEventListener('mouseup', () => {
+//     selecting = false;
+// })
+
 
 
 let clearBtn = document.querySelector(".clear")
@@ -240,8 +260,6 @@ airbrushBtn.addEventListener("click", () => {
         ctx2.lineWidth = lineWidth
         ctx2.strokeStyle= color;
     }
-
-
 })
 
 let selectBtn = document.querySelector(".select")
@@ -678,34 +696,109 @@ window.addEventListener("mousemove", (e) => {
 document.addEventListener('keypress', (event) => {
     var name = event.key;
     if (name === "q") {
-        if (mode === 0) {
-
-        } else if (mode === 1) {
+        if (mode === 1) {
             ctx.clearRect(startX, startY, selectedWidth, selectedHeight);
             ctx2.clearRect(0,0,canvas.width,canvas.height);
+        } else {
+           mode = 1;
+           selectMode();
         }
-    }
-    if (name === "p") {
-        penMode();
+        
+    }else if (name === "1") {
+        if (!snapping) {
+            mode = 0;
+            penMode();
+            utensil = 0;
+            ctx.globalAlpha = 1;
+        } else {
+            mode = 4;
+            utensil = 0;
+            penMode();
+            ctx2.globalAlpha = 1;
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = color;
+            ctx2.lineWidth = lineWidth
+            ctx2.strokeStyle= color;
+            ctx2.setLineDash([]);
+        }
+    } else if (name === "2") {
+        if (!snapping) {
+            mode = 0;
+            pencilMode();
+            utensil = 2;
+            ctx.globalAlpha = .9;
+        } else {
+            mode = 4;
+            utensil = 2;
+            pencilMode();
+            ctx2.globalAlpha = .9;
+            ctx.globalAlpha = .9;
+            ctx.strokeStyle = color;
+            ctx2.lineWidth = lineWidth
+            ctx2.strokeStyle= color;
+        }
+    } else if (name === "3") {
+        if (!snapping) {
+            mode = 0;
+            airbrushMode();
+            utensil = 1;
+            ctx.globalAlpha = 0.05;
+        } else {
+            mode = 4;
+            utensil = 0;
+            airbrushMode();
+            ctx2.globalAlpha = 0.05;
+            ctx.globalAlpha = 0.05;
+            ctx.strokeStyle = color;
+            ctx2.lineWidth = lineWidth
+            ctx2.strokeStyle= color;
+        }
+    } else if (name === "4") {
+
+    } else if (name === "5") {
+        utensil = -1;
+        mode = 0;
+        paintBucketMode();
+    } else if (name === "e") {
+        mode = 0;
+        utensil = 0;
+        eraserMode();
+    } else if (name === "s") {
+        strokeEraserMode();
+    } else if (name === "z") {
+        lineWidth = 5;
+        ctx.lineWidth = lineWidth;
+        ctx2.lineWidth = lineWidth;
+        thinBtn.checked = true;
+    } else if (name === "x") {
+        lineWidth = 10;
+        ctx.lineWidth = lineWidth;
+        ctx2.lineWidth = lineWidth;
+        medBtn.checked = true;
+    } else if (name === "c") {
+        lineWidth = 15;
+        ctx.lineWidth = lineWidth;
+        ctx2.lineWidth = lineWidth;
+        thickBtn.checked = true;
     }
 })
 
-var oldScrollY = window.scrollY;
-//var directionText = document.getElementById('direction');
-window.onscroll = function(e) {
-  if(oldScrollY < window.scrollY){
-        thickness.value--;
-        lineWidth = thickness.value;
-        ctx.lineWidth = lineWidth;
-        ctx2.lineWidth = lineWidth;
-  } else {
-      thickness.value++;
-      lineWidth = thickness.value;
-      ctx.lineWidth = lineWidth;
-      ctx2.lineWidth = lineWidth;
-  }
-  oldScrollY = window.scrollY;
-}
+// var oldScrollY = window.scrollY;
+// //var directionText = document.getElementById('direction');
+// window.onscroll = function(e) {
+//   if(oldScrollY < window.scrollY){
+//         thickness.value--;
+//         lineWidth = thickness.value;
+//         ctx.lineWidth = lineWidth;
+//         ctx2.lineWidth = lineWidth;
+//   } else {
+//       thickness.value++;
+//       lineWidth = thickness.value;
+//       ctx.lineWidth = lineWidth;
+//       ctx2.lineWidth = lineWidth;
+//   }
+//   oldScrollY = window.scrollY;
+// }
 // document.addEventListener('scroll', (event) => {
 //     //thickness.value--;
 // })
