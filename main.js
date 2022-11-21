@@ -363,7 +363,7 @@ window.addEventListener("mousedown", (e) => {
                 if (!moved) {
                     //fix bug
                     selectingColor = true;
-                    const gradient = ctx2.createConicGradient(0, e.clientX, e.clientY);
+                    const gradient = ctx2.createConicGradient(0, e.clientX - iconOffsetX, e.clientY - iconOffsetY);
 
                     gradient.addColorStop(0, "red");
                     gradient.addColorStop(1/7, "orange");
@@ -376,7 +376,7 @@ window.addEventListener("mousedown", (e) => {
 
                     ctx2.fillStyle = gradient;
                     ctx2.borderRadius = '50%';
-                    ctx2.fillRect(e.clientX-100, e.clientY-100, 200, 200, 200);
+                    ctx2.fillRect(e.clientX-iconOffsetX-100, e.clientY-iconOffsetY-100, 200, 200, 200);
 
 
                 }
@@ -444,8 +444,8 @@ window.addEventListener("mousedown", (e) => {
         ctx2.setLineDash([10,10])
         ctx2.strokeStyle="blue";
         ctx2.lineWidth=3;
-        startX = e.clientX;
-        startY = e.clientY;
+        startX = e.clientX - iconOffsetX;
+        startY = e.clientY - iconOffsetY;
     }
     
 })
@@ -467,7 +467,7 @@ window.addEventListener("mouseup", (e) => {
         clrDraw = true;
         draw = false
         if (selectingColor) {
-            const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
+            const imgData = ctx2.getImageData(e.clientX - iconOffsetX, e.clientY - iconOffsetY, 1, 1);
             const [r, g, b] = imgData.data;
             color = rgbToHex(r,g,b);
             changeColor = color;
@@ -482,8 +482,8 @@ window.addEventListener("mouseup", (e) => {
 
     } else if (mode === 1) {
         isDragging = false;
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+        mouseX = e.clientX - iconOffsetX;
+        mouseY = e.clientY - iconOffsetY;
 
         ctx2.clearRect(0,0,canvas2.width, canvas2.height);
         drawRectangle(mouseX, mouseY)
@@ -493,7 +493,7 @@ window.addEventListener("mouseup", (e) => {
         clrDraw = true;
         draw = false
         if (selectingColor) {
-            const imgData = ctx2.getImageData(e.clientX, e.clientY, 1, 1);
+            const imgData = ctx2.getImageData(e.clientX - iconOffsetX, e.clientY - iconOffsetY, 1, 1);
             const [r, g, b] = imgData.data;
             color = rgbToHex(r,g,b);
             changeColor = color;
@@ -610,13 +610,13 @@ window.addEventListener("mousemove", (e) => {
         moved = true;
         if (!selecting && !selectingColor && currentToolState != Tool.PaintBucket && currentToolState != Tool.StrokeEraser) {
             if(prevX == null || prevY == null || !draw) {
-                prevX = e.clientX
-                prevY = e.clientY
+                prevX = e.clientX - iconOffsetX
+                prevY = e.clientY - iconOffsetY
                 return
             }
     
-            let currentX = e.clientX
-            let currentY = e.clientY
+            let currentX = e.clientX - iconOffsetX
+            let currentY = e.clientY - iconOffsetY
     
             ctx.beginPath()
             ctx.moveTo(prevX, prevY)
@@ -624,11 +624,11 @@ window.addEventListener("mousemove", (e) => {
             if (utensil === 1) {
                 ctx.lineJoin = 'round';
                 ctx.miterLimit = 2;
-                ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2);
+                ctx.arc(e.clientX - iconOffsetX, e.clientY - iconOffsetY,lineWidth/4, 0, Math.PI*2);
             } else if (utensil === 0) {
                 ctx.lineJoin = 'round';
                 ctx.miterLimit = 2;
-                ctx.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
+                ctx.arc(e.clientX - iconOffsetX, e.clientY - iconOffsetY,lineWidth/4, 0, Math.PI*2)
             }
     
             ctx.stroke()
@@ -639,8 +639,8 @@ window.addEventListener("mousemove", (e) => {
             
         }
     } else if (mode === 1) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+        mouseX = e.clientX - iconOffsetX;
+        mouseY = e.clientY - iconOffsetY;
         if (!isDragging) {return;}
 
         ctx2.clearRect(0,0,canvas2.width, canvas2.height);
@@ -650,27 +650,27 @@ window.addEventListener("mousemove", (e) => {
         moved = true;
         if (!selecting && !selectingColor) {
             if(prevX == null || prevY == null || !draw) {
-                prevX = e.clientX
-                prevY = e.clientY
+                prevX = e.clientX - iconOffsetX
+                prevY = e.clientY - iconOffsetY
                 return
             }
-            if (e.clientX < minX) {
-                minX = e.clientX
+            if (e.clientX - iconOffsetX < minX) {
+                minX = e.clientX - iconOffsetX
             }
-            if (e.clientX > maxX) {
-                maxX = e.clientX
+            if (e.clientX - iconOffsetX > maxX) {
+                maxX = e.clientX -iconOffsetX
             }
-            if (e.clientY < minY) {
-                minY = e.clientY
+            if (e.clientY - iconOffsetY< minY) {
+                minY = e.clientY - iconOffsetY
             }
-            if (e.clientY > maxY) {
-                maxY = e.clientY
+            if (e.clientY - iconOffsetY > maxY) {
+                maxY = e.clientY - iconOffsetY
             } 
-            var point = {X: e.clientX, Y: e.clientY};
+            var point = {X: e.clientX - iconOffsetX, Y: e.clientY - iconOffsetY};
             points.push(point);
     
-            let currentX = e.clientX
-            let currentY = e.clientY
+            let currentX = e.clientX - iconOffsetX
+            let currentY = e.clientY - iconOffsetY
     
             ctx2.beginPath()
             ctx2.moveTo(prevX, prevY)
@@ -678,11 +678,11 @@ window.addEventListener("mousemove", (e) => {
             if (utensil === 1) {
                 ctx2.lineJoin = 'round';
                 ctx2.miterLimit = 2;
-                ctx2.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2);
+                ctx2.arc(e.clientX - iconOffsetX, e.clientY - iconOffsetY,lineWidth/4, 0, Math.PI*2);
             } else if (utensil === 0) {
                 ctx2.lineJoin = 'round';
                 ctx2.miterLimit = 2;
-                ctx2.arc(e.clientX, e.clientY,lineWidth/4, 0, Math.PI*2)
+                ctx2.arc(e.clientX - iconOffsetX, e.clientY - iconOffsetY,lineWidth/4, 0, Math.PI*2)
             }
     
             ctx2.stroke()
@@ -976,61 +976,4 @@ window.addEventListener('click', function (e) {
         }, 1000);
     }
 });
-
-// const fill = (sr, sc, newColor, current) => {
-//     //If row is less than 0
-//     if(sr < 0){
-//         return;
-//     }
-
-//     //If column is less than 0
-//     if(sc < 0){
-//         return;
-//     }
-
-//     //If row is greater than image length
-//     if(sr > canvas.width){
-//         return;
-//     }
-
-//     //If column is greater than image length
-//     if(sc > canvas.height){
-//         return;
-//     }
-
-//     //If the current pixel is not which needs to be replaced //TODO: query color //prev:image[sr][sc]
-//     var newCurrent = getCurrentPixelColor(sr,sc);
-//     // console.log(newCurrent);
-//     if(newCurrent != current){
-//         return;
-//     }
-    
-//     //Update the new color //TODO: set color//  image[sr][sc] = newColor;
-//     setCurrentPixelColor(sr,sc,newColor);
-//     // console.log("I set the color of a pixel!");
-
-//     //Fill in all four directions
-//     //Fill Prev row
-//     var leftColor = getCurrentPixelColor(sr-1, sc);
-//     if (leftColor == current) {
-//         fill(sr - 1, sc, newColor, current);
-//     } else {
-//         // console.log(leftColor, current);
-//     }
-
-//     //Fill Next row
-//     if (getCurrentPixelColor(sr+1, sc) == current) {
-//         fill(sr + 1, sc, newColor, current);
-//     }
-
-//     //Fill Prev col
-//     if (getCurrentPixelColor(sr, sc-1) == current) {
-//         fill(sr, sc-1, newColor, current);
-//     }
-
-//     //Fill next col
-//     if (getCurrentPixelColor(sr, sc+1) == current) {
-//         fill(sr, sc+1, newColor, current);
-//     }    
-// }
 
