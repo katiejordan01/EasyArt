@@ -14,17 +14,21 @@
         <h1>EasyArt</h1>
     </div>
     <div class="right-side">
-        <button class="pen">Pen</button>
-        <button class="pencil">Pencil</button>
-        <button class='airbrush'>Airbrush</button>
-        <button class="text">Text</button>
-        <button class="paintBucket">Paint Bucket</button>
-        <button class="eraser">Pixel Eraser</button>
-        <button class="stroke-eraser">Stroke Eraser</button>
+        <button class="pen">
+            Pen
+            <span class="utensiltooltip">1</span>
+        </button>
+        <button class="pencil">Pencil<span class="utensiltooltip">2</span></button>
+        <button class='airbrush'>Airbrush<span class="utensiltooltip">3</span></button>
+        <button class="text">Text<span class="utensiltooltip">4</span></button>
+        <button class="paintBucket">Paint Bucket<span class="utensiltooltip">5</span></button>
+        <button class="eraser">Pixel Eraser<span class="utensiltooltip">e</span></button>
+        <button class="stroke-eraser">Stroke Eraser<span class="utensiltooltip">s</span></button>
+        <button class="select">Select<span class="utensiltooltip">q</span></button>
         <button class="clear">Clear</button>
-        <button class="select">Select</button>
         <input type="range"id="thickness" name="thickness" min="5" max="15">
         <Label for="thickness">Thickness</Label>
+        <input type="range"id="test" name="test" min="5" max="15" >
 
     </div>
     <div class="left-side">
@@ -32,7 +36,7 @@
         <label class="switch">
             <input type="checkbox" >
             <span class="slider round"></span>
-          </label>
+        </label>
     </div>
     <div class="nav">
         <!-- We will be accessing the data-clr in JavaScript -->
@@ -41,6 +45,7 @@
         <input class="stroke" name='stroke' type="color" value="#6495ED">
         <input class="stroke" name='stroke' type="color" value="#DC143C">
         <input class="stroke" name='stroke' type="color" value="#9932CC">
+        <input type="range" class="volume" name="volume" min="0" max="15" >
     </div>
 
     <script type="module" src="main.js"></script>

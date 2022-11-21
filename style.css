@@ -88,11 +88,31 @@ button{
     height: 6%;
     width: 95%;
 }
+button:hover .utensiltooltip {
+  /* NEW */
+  display: block;
+}
+
+.utensiltooltip {
+  display: none;
+  /* NEW */
+  background: #dfdcdc37;
+  margin-left: 28px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1000;
+  width: 20px;
+  height: 10px;
+}
 .pen {
   border: 2px solid #ff0000;
   background-color: #ffffff;
   color: rgb(0, 0, 0);
   font-family: Monaco;
+}
+p{
+  font-family: Monaco;
+
 }
 .pen:hover {
   border: 2px solid #ff0000;
