@@ -26,10 +26,24 @@
         <button class="stroke-eraser">Stroke Eraser<span class="utensiltooltip">s</span></button>
         <button class="select">Select<span class="utensiltooltip">q</span></button>
         <button class="clear">Clear</button>
-        <input type="range"id="thickness" name="thickness" min="5" max="15">
-        <Label for="thickness">Thickness</Label>
-        <input type="range"id="test" name="test" min="5" max="15" >
-
+        <fieldset>
+            <legend>Thickness</legend>
+        
+            <div class = 'radiobuttons'>
+              <input type="radio" id="huey" name="drone" value="5">
+              <label for="huey">Thin</label>
+            </div>
+        
+            <div class = 'radiobuttons'>
+              <input type="radio" id="dewey" name="drone" value="10" checked>
+              <label for="dewey">Medium</label>
+            </div>
+        
+            <div class = 'radiobuttons'>
+              <input type="radio" id="louie" name="drone" value="15">
+              <label for="louie">Thick</label>
+            </div>
+        </fieldset>
     </div>
     <div class="left-side">
         <p>Shape Snapping</p>
@@ -40,12 +54,11 @@
     </div>
     <div class="nav">
         <!-- We will be accessing the data-clr in JavaScript -->
-        <input class="stroke" name='stroke' type="color" >
+        <input class="stroke" name='stroke' type="color"><span class="utensiltooltip">2</span></label>
         <input class="stroke" name='stroke' type="color" value="#F8F8FF">
         <input class="stroke" name='stroke' type="color" value="#6495ED">
         <input class="stroke" name='stroke' type="color" value="#DC143C">
         <input class="stroke" name='stroke' type="color" value="#9932CC">
-        <input type="range" class="volume" name="volume" min="0" max="15" >
     </div>
 
     <script type="module" src="main.js"></script>

@@ -16,8 +16,7 @@ canvas2.width = window.innerWidth;
 canvas2.height = window.innerHeight;
 const colorSelector = document.getElementById('stroke');
 let thickness = document.getElementById('thickness');
-let test = document.getElementById('test');
-console.log(test.value)
+
 
 var textboxes = [];
 var changeColor = "#000000";
@@ -125,35 +124,35 @@ clrs.forEach(clr => {
     })
 })
 
-// let thickness = document.querySelector(".thickness")
-thickness.addEventListener('change', () => {
-    if (!snapping) {
-        lineWidth = thickness.value;
-        ctx.lineWidth = thickness.value;
-    } else {
-        lineWidth = thickness.value;
-        ctx2.lineWidth = thickness.value;
-    }
-})
-thickness.addEventListener('mousedown', () => {
-    selecting = true;
-})
-thickness.addEventListener('mouseup', () => {
-    selecting = false;
-})
+let radio = document.querySelectorAll(".radiobuttons");
+radio = Array.from(radio);
+radio.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        lineWidth = e.target.value;
+        ctx2.lineWidth = lineWidth
+        ctx.lineWidth = lineWidth
+    })
+}
 
-//let clrs = document.querySelectorAll(".stroke");
-let vol = document.querySelector(".volume")
-vol.addEventListener('change', () => {
-    //this.setAttribute('value',this.value);
-    console.log("change")
-})
-vol.addEventListener('mousedown', () => {
-    console.log("down")
-})
-thickness.addEventListener('mouseup', () => {
-    selecting = false;
-})
+)
+
+
+// // let thickness = document.querySelector(".thickness")
+// thickness.addEventListener('change', () => {
+//     if (!snapping) {
+//         lineWidth = thickness.value;
+//         ctx.lineWidth = thickness.value;
+//     } else {
+//         lineWidth = thickness.value;
+//         ctx2.lineWidth = thickness.value;
+//     }
+// })
+// thickness.addEventListener('mousedown', () => {
+//     selecting = true;
+// })
+// thickness.addEventListener('mouseup', () => {
+//     selecting = false;
+// })
 
 
 
