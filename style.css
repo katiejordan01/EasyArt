@@ -101,7 +101,7 @@ button:hover .utensiltooltip {
   padding: 10px;
   position: absolute;
   z-index: 1000;
-  width: 20px;
+  width: fit-content;
   height: 10px;
 }
 .pen {
@@ -144,51 +144,39 @@ p{
   color: rgb(0, 0, 0);
   font-family: Monaco;
 }
-.text {
+.paintBucket {
   border: 2px solid #22bd03;
   background-color: #ffffff;
   color: rgb(0, 0, 0);
   font-family: Monaco;
 }
-.text:hover {
+.paintBucket:hover{
   border: 2px solid #22bd03;
   background-color: #22bd03;
   color: rgb(0, 0, 0);
   font-family: Monaco;
 }
-.paintBucket {
-  border: 2px solid #1b7cfa;
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  font-family: Monaco;
-}
-.paintBucket:hover {
-  border: 2px solid #1b7cfa;
-  background-color: #1b7cfa;
-  color: rgb(0, 0, 0);
-  font-family: Monaco;
-}
 .eraser {
-  border: 2px solid #802cbc;
+  border: 2px solid #1b7cfa;
   background-color: #ffffff;
   color: rgb(0, 0, 0);
   font-family: Monaco;
 }
 .eraser:hover {
-  border: 2px solid #802cbc;
-  background-color: #802cbc;
+  border: 2px solid #1b7cfa;
+  background-color: #1b7cfa;
   color: rgb(0, 0, 0);
   font-family: Monaco;
 }
-.stroke-eraser {
-  border: 2px solid #9400D3;
+.stroke-eraser  {
+  border: 2px solid #802cbc;
   background-color: #ffffff;
   color: rgb(0, 0, 0);
   font-family: Monaco;
 }
-.stroke-eraser:hover {
-  border: 2px solid #9400D3;
-  background-color: #9400D3;
+.stroke-eraser:hover  {
+  border: 2px solid #802cbc;
+  background-color: #802cbc;
   color: rgb(0, 0, 0);
   font-family: Monaco;
 }

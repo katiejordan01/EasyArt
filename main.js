@@ -754,8 +754,6 @@ document.addEventListener('keypress', (event) => {
             ctx2.strokeStyle= color;
         }
     } else if (name === "4") {
-
-    } else if (name === "5") {
         utensil = -1;
         mode = 0;
         paintBucketMode();
