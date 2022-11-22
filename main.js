@@ -303,6 +303,7 @@ function pencilMode() {
     currentToolState = Tool.Pencil;
     iconOffsetX = -2;
     iconOffsetY = -25;
+    ctx.lineCap = "butt"
     // ctx.lineWidth = lineWidthSelector.value;
     ctx.strokeStyle = changeColor;
     document.body.style.cursor = "url(https://findicons.com/files/icons/1620/crystal_project/22/14_pencil.png), auto"; //setting the icon
@@ -937,39 +938,58 @@ window.addEventListener('click', function (e) {
     if (!throttle && e.detail === 3) {
         console.log('Triple-clicked!');
         throttle = true;
-
+        if (currentToolState == Tool.Pen || currentToolState == Tool.Pencil) {
+            mode = 0;
+            utensil = 0;
+        eraserMode();
+        } else if (currentToolState == Tool.Eraser) {
+            if (!snapping) {
+                mode = 0;
+                penMode();
+                utensil = 0;
+                ctx.globalAlpha = 1;
+            } else {
+                mode = 4;
+                utensil = 0;
+                penMode();
+                ctx2.globalAlpha = 1;
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = color;
+                ctx2.lineWidth = lineWidth
+                ctx2.strokeStyle= color;
+                ctx2.setLineDash([]);
+            }
+        }
         console.log('clickx:', e.clientX - iconOffsetX, 'clicky:', e.clientY - iconOffsetY);
-                // console.log(window);
-                let nav = document.querySelector(".nav");
-                let side = document.querySelector(".right-side");
-                var leftNav, topNav, rightNav, bottomNav;
-                var rectSide = getOffset(side);
-                var leftSide = rectSide.left;
-                var rightSide = rectSide.right;
-                var topSide = rectSide.top;
-                var bottomSide = rectSide.bottom;
-                var rect = getOffset(nav);
-                leftNav = rect.left;
-                rightNav = rect.right;
-                topNav = rect.top;
-                bottomNav = rect.bottom;
-                console.log(leftNav, rightNav, topNav, bottomNav);
-                let paintX = e.clientX - iconOffsetX;
-                let paintY = e.clientY - iconOffsetY;
-                var beforePaintColor = getCurrentPixelColorPaintEdition(paintX, paintY);
-                if (paintX > leftNav && paintX < rightNav && paintY < bottomNav && paintY > topNav) {
-                    console.log("You're inside the nav!");
-                } else if (paintX > leftSide && paintX < rightSide && paintY < bottomSide && paintY > topSide) {
-                    console.log("You're inside the side!");
-                } else if (e.clientX > leftSide && e.clientX < rightSide && e.clientY < bottomSide && e.clientY > topSide) {
-                    console.log("you're reg mouse is inside the side");
-                } else if (changeColor == beforePaintColor) {
-                    console.log("it's already the color that you want it to be!")
-                } else {
-                    floodFill(paintX,paintY, changeColor);
-                }
-
-
+        // console.log(window);
+        let nav = document.querySelector(".nav");
+        let side = document.querySelector(".right-side");
+        var leftNav, topNav, rightNav, bottomNav;
+        var rectSide = getOffset(side);
+        var leftSide = rectSide.left;
+        var rightSide = rectSide.right;
+        var topSide = rectSide.top;
+        var bottomSide = rectSide.bottom;
+        var rect = getOffset(nav);
+        leftNav = rect.left;
+        rightNav = rect.right;
+        topNav = rect.top;
+        bottomNav = rect.bottom;
+        console.log(leftNav, rightNav, topNav, bottomNav);
+        let paintX = e.clientX - iconOffsetX;
+        let paintY = e.clientY - iconOffsetY;
+        var beforePaintColor = getCurrentPixelColorPaintEdition(paintX, paintY);
+        if (paintX > leftNav && paintX < rightNav && paintY < bottomNav && paintY > topNav) {
+            console.log("You're inside the nav!");
+        } else if (paintX > leftSide && paintX < rightSide && paintY < bottomSide && paintY > topSide) {
+            console.log("You're inside the side!");
+        } else if (e.clientX > leftSide && e.clientX < rightSide && e.clientY < bottomSide && e.clientY > topSide) {
+            console.log("you're reg mouse is inside the side");
+        } else if (changeColor == beforePaintColor) {
+            console.log("it's already the color that you want it to be!")
+        } else {
+            floodFill(paintX,paintY, changeColor);
+        }
 
         setTimeout(function () {    
             throttle = false;
@@ -977,3 +997,12 @@ window.addEventListener('click', function (e) {
     }
 });
 
+window.addEventListener('contextmenu', (e) => {
+    if (currentToolState == Tool.StrokeEraser) {
+        mode = 0;
+        utensil = 0;
+        eraserMode();
+    } else if (currentToolState == Tool.Eraser) {
+        strokeEraserMode();
+    }
+})
