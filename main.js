@@ -238,10 +238,7 @@ paintBucketBtn.addEventListener("click", () => {
     mode = 0;
     paintBucketMode();
 })
-let textBtn = document.querySelector(".text");
-textBtn.addEventListener("click", () => {
-    textMode();
-})
+
 
 let airbrushBtn = document.querySelector(".airbrush")
 airbrushBtn.addEventListener("click", () => {
