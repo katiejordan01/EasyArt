@@ -238,10 +238,7 @@ paintBucketBtn.addEventListener("click", () => {
     mode = 0;
     paintBucketMode();
 })
-let textBtn = document.querySelector(".text");
-textBtn.addEventListener("click", () => {
-    textMode();
-})
+
 
 let airbrushBtn = document.querySelector(".airbrush")
 airbrushBtn.addEventListener("click", () => {
@@ -755,8 +752,6 @@ document.addEventListener('keypress', (event) => {
             ctx2.strokeStyle= color;
         }
     } else if (name === "4") {
-
-    } else if (name === "5") {
         utensil = -1;
         mode = 0;
         paintBucketMode();
